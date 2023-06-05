@@ -11,7 +11,7 @@ def pre_processa_imagem(imagem):
 
         cnts = cv2.findContours(edged.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
         cnts = imutils.grab_contours(cnts)
-        docCnt = None
+        doCnt = None
 
         if len(cnts) > 0:
             cnts = sorted(cnts, key=cv2.contourArea, reverse=True)

@@ -1,20 +1,33 @@
 from imagem import imagem
 import cv2
+import streamlit as st
+from pages import page_criar_prova, page_corrigir_provas, page_processar_dados
+
 
 def main():
+    with open("style/style.css") as f:
+        st.markdown(f"<style>{f.read()}<style>", unsafe_allow_html= True)
+
+
+     
+    menu, opcoes = st.columns([2, 5])
     
-    ANSWER_KEY = [{0: 1, 1: 0, 2: 0, 3: 3, 4: 1, 5: 3, 6: 3, 7: 2, 8: 2, 9: 2}, 
-                  {0: 1, 1: 0, 2: 0, 3: 3, 4: 1, 5: 3, 6: 3, 7: 2, 8: 2, 9: 2}]
+    with menu:
+        menu_select = st.selectbox('selecione a página', ('Criar Prova', 'Corrigir Prova', 'Dados'))
 
+    with opcoes:
+        st.title('Corretor de provas')
 
+        if menu_select == 'Criar Prova':
+            page_criar_prova()
 
-    img = cv2.imread('IMG_6841 (1).JPG')
-    image = imagem(img)
-    processadas, papers = image.pre_processa_imagem()
-    pontuação, papers = image.processa_imagem(ANSWER_KEY, processadas, papers)
-    imagem_pronta = cv2.hconcat(papers)
-    cv2.imshow('', imagem_pronta)
-    cv2.waitKey(0)
+        elif menu_select == 'Corrigir Prova':
+            page_corrigir_provas()
+
+        elif menu_select == 'Dados':
+            page_processar_dados()
+        
+    
 
 if(__name__ == "__main__"):
     main()

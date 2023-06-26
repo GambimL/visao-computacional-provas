@@ -7,151 +7,861 @@
         <title>Corretor de Provas</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" 
-                rel="stylesheet" 
-                integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" 
-                crossorigin="anonymous">
+        <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+            integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM"
+            crossorigin="anonymous">
     </head>
     <body>
 
         <div class="container text-center">
-            <div class="d-grid gap-2 col-6 mx-auto">
+            <div class="d-grid gap-2 col-8 mx-auto text-start">
                 <p>
-                    <button class="btn btn-primary" 
-                        type="button" 
-                        data-bs-toggle="collapse" 
+                    <button
+                        class="btn btn-primary"
+                        type="button"
+                        data-bs-toggle="collapse"
                         data-bs-target="#collapseExample">
-                        Button with data-bs-target
+                        Criar Prova
                     </button>
                 </p>
-                    <div class="collapse" 
-                        id="collapseExample">
-                        <div class="card card-outline-body">
-                            <form action="/cirarprovas" method="post">
-                                <div class="input-group mb-3">
-                                    <label for="nomeprova" class="form-label">Email address</label>
-                                    <input type="text" class="form-control" placeholder="Nome da Prova" aria-label="Username" aria-describedby="basic-addon2" name="nomeprova" id="nomeprova">
-                                  </div>
-                                  
-                                  <div class="input-group mb-3">   
-                                    <div class="container text-center">
-                                        <div class="row">
-                                            <div class="col">
-                                                <span class="input-group-text" id="basic-addon1">Questão 1</span>
-                                                <button type="checkbox" class="btn btn-outline-success" data-bs-toggle="button" aria-pressed="true">A</button>
-                                                <button type="button" class="btn btn-outline-success" data-bs-toggle="button" aria-pressed="true">A</button>
-                                                <button type="button" class="btn btn-outline-success" data-bs-toggle="button" aria-pressed="true">B</button>
-                                                <button type="button" class="btn btn-outline-success" data-bs-toggle="button" aria-pressed="true">C</button>
-                                            </div>
-                                            <div class="col"> 
-                                                <span class="input-group-text" id="basic-addon1">Quetão 2</span>
-                                                <button type="button" 
-                                                    class="btn btn-outline-success" 
-                                                    data-bs-toggle="button" 
-                                                    aria-pressed="true">A</button>
-                                                <button type="button" 
-                                                    class="btn btn-outline-success" 
-                                                    data-bs-toggle="button" 
-                                                    aria-pressed="true">B</button>
-                                                <button type="button" 
-                                                    class="btn btn-outline-success" 
-                                                    data-bs-toggle="button" 
-                                                    aria-pressed="true">c</button>
-                                                <button type="button" 
-                                                    class="btn btn-outline-success" 
-                                                    data-bs-toggle="button" 
-                                                    aria-pressed="true">D</button>
-                                        </div>
-                                      </div> 
-                                      <div class="row">
-                                        <div class="col">
-                                            <span class="input-group-text" id="basic-addon1">Questão 3</span>
-                                            <button type="button" 
-                                                class="btn btn-outline-success" 
-                                                data-bs-toggle="button" 
+                <div class="collapse" id="collapseExample">
+                    <div class="card card-outline-body">
+                        <form action="/cirarprovas" method="post">
+                            <div class="mb-3 text-start" style="padding: 30px;">
+                                <label for="nomeprova" class="form-label">Nome da Prova</label>
+                                <input
+                                    type="text"
+                                    class="form-control"
+                                    aria-label="Username"
+                                    aria-describedby="basic-addon2"
+                                    name="nomeprova"
+                                    id="nomeprova">
+                            </div>
+                            <div class="mb-3 text-start" style="margin: 30px;">
+                                <select class="form-select" aria-label="Default select example">
+                                    <option selected="selected">Area</option>
+                                    <option value="1">Ciências Humanas</option>
+                                    <option value="2">Ciências Da Natureza</option>
+                                    <option value="3">Linguagens</option>
+                                    <option value="3">Matemática</option>
+                                </select>
+                            </div>
+                            <div class="container text-start">
+                                <div class="row text-start">
+                                    <div class="col text-start">
+                                        <label for="nomeprova" class="form-label">Questão-1</label>
+                                        <div class="mb-3">
+                                            <button
+                                                type="checkbox"
+                                                class="btn btn-outline-success btn-sm"
+                                                data-bs-toggle="button"
                                                 aria-pressed="true">A</button>
-                                            <button type="button" 
-                                                class="btn btn-outline-success" 
-                                                data-bs-toggle="button" 
+                                            <button
+                                                type="checkbox"
+                                                class="btn btn-outline-success btn-sm"
+                                                data-bs-toggle="button"
                                                 aria-pressed="true">B</button>
-                                            <button type="button" 
-                                                class="btn btn-outline-success" 
-                                                data-bs-toggle="button" 
-                                                aria-pressed="true">c</button>
-                                            <button type="button" 
-                                                class="btn btn-outline-success" 
-                                                data-bs-toggle="button" 
+                                            <button
+                                                type="Checkbox"
+                                                class="btn btn-outline-success btn-sm"
+                                                data-bs-toggle="button"
+                                                aria-pressed="true">C</button>
+                                            <button
+                                                type="button"
+                                                class="btn btn-outline-success btn-sm"
+                                                data-bs-toggle="button"
                                                 aria-pressed="true">D</button>
+                                            <button
+                                                type="button"
+                                                class="btn btn-outline-success btn-sm"
+                                                data-bs-toggle="button"
+                                                aria-pressed="true">E</button>
+                                            <input
+                                                type="text"
+                                                class="form-control"
+                                                aria-label="Username"
+                                                aria-describedby="basic-addon2"
+                                                placeholder="Peso"
+                                                name="PESOQ1"
+                                                id="PESOQ1"
+                                                style="width: 100px; padding-left: 30px;">
                                         </div>
-                                        <div class="col"> 
-                                            <span class="input-group-text" id="basic-addon1">Quetão 4</span>
-                                            <button type="button" 
-                                                class="btn btn-outline-success" 
-                                                data-bs-toggle="button" 
-                                                aria-pressed="true">A</button>
-                                            <button type="button" 
-                                                class="btn btn-outline-success" 
-                                                data-bs-toggle="button" 
-                                                aria-pressed="true">B</button>
-                                            <button type="button" 
-                                                class="btn btn-outline-success" 
-                                                data-bs-toggle="button" 
-                                                aria-pressed="true">c</button>
-                                            <button type="button" 
-                                                class="btn btn-outline-success" 
-                                                data-bs-toggle="button" 
-                                                aria-pressed="true">D</button>
                                     </div>
-                                  </div> 
-                                  <div class="row">
                                     <div class="col">
-                                        <span class="input-group-text" id="basic-addon1">Questão 4</span>
-                                        <button type="button" 
-                                            class="btn btn-outline-success" 
-                                            data-bs-toggle="button" 
-                                            aria-pressed="true">A</button>
-                                        <button type="button" 
-                                            class="btn btn-outline-success" 
-                                            data-bs-toggle="button" 
-                                            aria-pressed="true">B</button>
-                                        <button type="button" 
-                                            class="btn btn-outline-success" 
-                                            data-bs-toggle="button" 
-                                            aria-pressed="true">c</button>
-                                        <button type="button" 
-                                            class="btn btn-outline-success" 
-                                            data-bs-toggle="button" 
-                                            aria-pressed="true">D</button>
+                                        <label for="nomeprova" class="form-label">Questão-2</label>
+                                        <div class="mb-3">
+                                            <button
+                                                type="button"
+                                                class="btn btn-outline-success btn-sm"
+                                                data-bs-toggle="button"
+                                                aria-pressed="true">A</button>
+                                            <button
+                                                type="button"
+                                                class="btn btn-outline-success btn-sm"
+                                                data-bs-toggle="button"
+                                                aria-pressed="true">B</button>
+                                            <button
+                                                type="button"
+                                                class="btn btn-outline-success btn-sm"
+                                                data-bs-toggle="button"
+                                                aria-pressed="true">c</button>
+                                            <button
+                                                type="button"
+                                                class="btn btn-outline-success btn-sm"
+                                                data-bs-toggle="button"
+                                                aria-pressed="true">D</button>
+                                            <button
+                                                type="button"
+                                                class="btn btn-outline-success btn-sm"
+                                                data-bs-toggle="button"
+                                                aria-pressed="true">E</button>
+                                            <input
+                                                type="text"
+                                                class="form-control"
+                                                aria-label="Username"
+                                                aria-describedby="basic-addon2"
+                                                placeholder="Peso"
+                                                name="PESOQ1"
+                                                id="PESOQ1"
+                                                style="width: 100px; padding-left: 30px;">
+                                        </div>
                                     </div>
-                                    <div class="col"> 
-                                        <span class="input-group-text" id="basic-addon1">Quetão 5</span>
-                                        <button type="button" 
-                                            class="btn btn-outline-success" 
-                                            data-bs-toggle="button" 
-                                            aria-pressed="true">A</button>
-                                        <button type="button" 
-                                            class="btn btn-outline-success" 
-                                            data-bs-toggle="button" 
-                                            aria-pressed="true">B</button>
-                                        <button type="button" 
-                                            class="btn btn-outline-success" 
-                                            data-bs-toggle="button" 
-                                            aria-pressed="true">c</button>
-                                        <button type="button" 
-                                            class="btn btn-outline-success" 
-                                            data-bs-toggle="button" 
-                                            aria-pressed="true">D</button>
-                                    </div>
-                                </div> 
                                 </div>
-                              </div>
-                            </form>
-                        </div>
-                    </div>
-              </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <label for="nomeprova" class="form-label">Questão-3</label>
+                                        <div class="mb-3">
+                                            <button
+                                                type="button"
+                                                class="btn btn-outline-success btn-sm"
+                                                data-bs-toggle="button"
+                                                aria-pressed="true">A</button>
+                                            <button
+                                                type="button"
+                                                class="btn btn-outline-success btn-sm"
+                                                data-bs-toggle="button"
+                                                aria-pressed="true">B</button>
+                                            <button
+                                                type="button"
+                                                class="btn btn-outline-success btn-sm"
+                                                data-bs-toggle="button"
+                                                aria-pressed="true">c</button>
+                                            <button
+                                                type="button"
+                                                class="btn btn-outline-success btn-sm"
+                                                data-bs-toggle="button"
+                                                aria-pressed="true">D</button>
+                                            <button
+                                                type="button"
+                                                class="btn btn-outline-success btn-sm"
+                                                data-bs-toggle="button"
+                                                aria-pressed="true">E</button>
+                                            <input
+                                                type="text"
+                                                class="form-control"
+                                                aria-label="Username"
+                                                aria-describedby="basic-addon2"
+                                                placeholder="Peso"
+                                                name="PESOQ1"
+                                                id="PESOQ1"
+                                                style="width: 100px; padding-left: 30px;">
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <label for="nomeprova" class="form-label">Questão-4</label>
+                                        <div class="mb-3">
+                                            <button
+                                                type="button"
+                                                class="btn btn-outline-success btn-sm"
+                                                data-bs-toggle="button"
+                                                aria-pressed="true">A</button>
+                                            <button
+                                                type="button"
+                                                class="btn btn-outline-success btn-sm"
+                                                data-bs-toggle="button"
+                                                aria-pressed="true">B</button>
+                                            <button
+                                                type="button"
+                                                class="btn btn-outline-success btn-sm"
+                                                data-bs-toggle="button"
+                                                aria-pressed="true">c</button>
+                                            <button
+                                                type="button"
+                                                class="btn btn-outline-success btn-sm"
+                                                data-bs-toggle="button"
+                                                aria-pressed="true">D</button>
+                                            <button
+                                                type="button"
+                                                class="btn btn-outline-success btn-sm"
+                                                data-bs-toggle="button"
+                                                aria-pressed="true">E</button>
+                                            <input
+                                                type="text"
+                                                class="form-control"
+                                                aria-label="Username"
+                                                aria-describedby="basic-addon2"
+                                                placeholder="Peso"
+                                                name="PESOQ1"
+                                                id="PESOQ1"
+                                                style="width: 100px; padding-left: 30px;">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <label for="nomeprova" class="form-label">Questão-5</label>
+                                        <div class="mb-3">
+                                            <button
+                                                type="button"
+                                                class="btn btn-outline-success btn-sm"
+                                                data-bs-toggle="button"
+                                                aria-pressed="true">A</button>
+                                            <button
+                                                type="button"
+                                                class="btn btn-outline-success btn-sm"
+                                                data-bs-toggle="button"
+                                                aria-pressed="true">B</button>
+                                            <button
+                                                type="button"
+                                                class="btn btn-outline-success btn-sm"
+                                                data-bs-toggle="button"
+                                                aria-pressed="true">c</button>
+                                            <button
+                                                type="button"
+                                                class="btn btn-outline-success btn-sm"
+                                                data-bs-toggle="button"
+                                                aria-pressed="true">D</button>
+                                            <button
+                                                type="button"
+                                                class="btn btn-outline-success btn-sm"
+                                                data-bs-toggle="button"
+                                                aria-pressed="true">E</button>
+                                            <input
+                                                type="text"
+                                                class="form-control"
+                                                aria-label="Username"
+                                                aria-describedby="basic-addon2"
+                                                placeholder="Peso"
+                                                name="PESOQ1"
+                                                id="PESOQ1"
+                                                style="width: 100px; padding-left: 30px;">
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <label for="nomeprova" class="form-label">Questão-6</label>
+                                        <div class="mb-3">
+                                            <button
+                                                type="button"
+                                                class="btn btn-outline-success btn-sm"
+                                                data-bs-toggle="button"
+                                                aria-pressed="true">A</button>
+                                            <button
+                                                type="button"
+                                                class="btn btn-outline-success btn-sm"
+                                                data-bs-toggle="button"
+                                                aria-pressed="true">B</button>
+                                            <button
+                                                type="button"
+                                                class="btn btn-outline-success btn-sm"
+                                                data-bs-toggle="button"
+                                                aria-pressed="true">c</button>
+                                            <button
+                                                type="button"
+                                                class="btn btn-outline-success btn-sm"
+                                                data-bs-toggle="button"
+                                                aria-pressed="true">D</button>
+                                            <button
+                                                type="button"
+                                                class="btn btn-outline-success btn-sm"
+                                                data-bs-toggle="button"
+                                                aria-pressed="true">E</button>
+                                            <input
+                                                type="text"
+                                                class="form-control"
+                                                aria-label="Username"
+                                                aria-describedby="basic-addon2"
+                                                placeholder="Peso"
+                                                name="PESOQ1"
+                                                id="PESOQ1"
+                                                style="width: 100px; padding-left: 30px;">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <label for="nomeprova" class="form-label">Questão-7</label>
+                                        <div class="mb-3">
+                                            <button
+                                                type="button"
+                                                class="btn btn-outline-success btn-sm"
+                                                data-bs-toggle="button"
+                                                aria-pressed="true">A</button>
+                                            <button
+                                                type="button"
+                                                class="btn btn-outline-success btn-sm"
+                                                data-bs-toggle="button"
+                                                aria-pressed="true">B</button>
+                                            <button
+                                                type="button"
+                                                class="btn btn-outline-success btn-sm"
+                                                data-bs-toggle="button"
+                                                aria-pressed="true">c</button>
+                                            <button
+                                                type="button"
+                                                class="btn btn-outline-success btn-sm"
+                                                data-bs-toggle="button"
+                                                aria-pressed="true">D</button>
+                                            <button
+                                                type="button"
+                                                class="btn btn-outline-success btn-sm"
+                                                data-bs-toggle="button"
+                                                aria-pressed="true">E</button>
+                                            <input
+                                                type="text"
+                                                class="form-control"
+                                                aria-label="Username"
+                                                aria-describedby="basic-addon2"
+                                                placeholder="Peso"
+                                                name="PESOQ1"
+                                                id="PESOQ1"
+                                                style="width: 100px; padding-left: 30px;">
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <label for="nomeprova" class="form-label">Questão-8</label>
+                                        <div class="mb-3">
+                                            <button
+                                                type="button"
+                                                class="btn btn-outline-success btn-sm"
+                                                data-bs-toggle="button"
+                                                aria-pressed="true">A</button>
+                                            <button
+                                                type="button"
+                                                class="btn btn-outline-success btn-sm"
+                                                data-bs-toggle="button"
+                                                aria-pressed="true">B</button>
+                                            <button
+                                                type="button"
+                                                class="btn btn-outline-success btn-sm"
+                                                data-bs-toggle="button"
+                                                aria-pressed="true">c</button>
+                                            <button
+                                                type="button"
+                                                class="btn btn-outline-success btn-sm"
+                                                data-bs-toggle="button"
+                                                aria-pressed="true">D</button>
+                                            <button
+                                                type="button"
+                                                class="btn btn-outline-success btn-sm"
+                                                data-bs-toggle="button"
+                                                aria-pressed="true">E</button>
+                                            <input
+                                                type="text"
+                                                class="form-control"
+                                                aria-label="Username"
+                                                aria-describedby="basic-addon2"
+                                                placeholder="Peso"
+                                                name="PESOQ1"
+                                                id="PESOQ1"
+                                                style="width: 100px; padding-left: 30px;">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <label for="nomeprova" class="form-label">Questão-9</label>
+                                        <div class="mb-3">
+                                            <button
+                                                type="button"
+                                                class="btn btn-outline-success btn-sm"
+                                                data-bs-toggle="button"
+                                                aria-pressed="true">A</button>
+                                            <button
+                                                type="button"
+                                                class="btn btn-outline-success btn-sm"
+                                                data-bs-toggle="button"
+                                                aria-pressed="true">B</button>
+                                            <button
+                                                type="button"
+                                                class="btn btn-outline-success btn-sm"
+                                                data-bs-toggle="button"
+                                                aria-pressed="true">c</button>
+                                            <button
+                                                type="button"
+                                                class="btn btn-outline-success btn-sm"
+                                                data-bs-toggle="button"
+                                                aria-pressed="true">D</button>
+                                            <button
+                                                type="button"
+                                                class="btn btn-outline-success btn-sm"
+                                                data-bs-toggle="button"
+                                                aria-pressed="true">E</button>
+                                            <input
+                                                type="text"
+                                                class="form-control"
+                                                aria-label="Username"
+                                                aria-describedby="basic-addon2"
+                                                placeholder="Peso"
+                                                name="PESOQ1"
+                                                id="PESOQ1"
+                                                style="width: 100px; padding-left: 30px;">
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <label for="nomeprova" class="form-label">Questão-10</label>
+                                        <div class="mb-3">
+                                            <button
+                                                type="button"
+                                                class="btn btn-outline-success btn-sm"
+                                                data-bs-toggle="button"
+                                                aria-pressed="true">A</button>
+                                            <button
+                                                type="button"
+                                                class="btn btn-outline-success btn-sm"
+                                                data-bs-toggle="button"
+                                                aria-pressed="true">B</button>
+                                            <button
+                                                type="button"
+                                                class="btn btn-outline-success btn-sm"
+                                                data-bs-toggle="button"
+                                                aria-pressed="true">c</button>
+                                            <button
+                                                type="button"
+                                                class="btn btn-outline-success btn-sm"
+                                                data-bs-toggle="button"
+                                                aria-pressed="true">D</button>
+                                            <button
+                                                type="button"
+                                                class="btn btn-outline-success btn-sm"
+                                                data-bs-toggle="button"
+                                                aria-pressed="true">E</button>
+                                            <input
+                                                type="text"
+                                                class="form-control"
+                                                aria-label="Username"
+                                                aria-describedby="basic-addon2"
+                                                placeholder="Peso"
+                                                name="PESOQ1"
+                                                id="PESOQ1"
+                                                style="width: 100px; padding-left: 30px;">
+                                        </div>
+                                    </div>   
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <label for="nomeprova" class="form-label">Questão-11</label>
+                                        <div class="mb-3">
+                                            <button
+                                                type="button"
+                                                class="btn btn-outline-success btn-sm"
+                                                data-bs-toggle="button"
+                                                aria-pressed="true">A</button>
+                                            <button
+                                                type="button"
+                                                class="btn btn-outline-success btn-sm"
+                                                data-bs-toggle="button"
+                                                aria-pressed="true">B</button>
+                                            <button
+                                                type="button"
+                                                class="btn btn-outline-success btn-sm"
+                                                data-bs-toggle="button"
+                                                aria-pressed="true">c</button>
+                                            <button
+                                                type="button"
+                                                class="btn btn-outline-success btn-sm"
+                                                data-bs-toggle="button"
+                                                aria-pressed="true">D</button>
+                                            <button
+                                                type="button"
+                                                class="btn btn-outline-success btn-sm"
+                                                data-bs-toggle="button"
+                                                aria-pressed="true">E</button>
+                                            <input
+                                                type="text"
+                                                class="form-control"
+                                                aria-label="Username"
+                                                aria-describedby="basic-addon2"
+                                                placeholder="Peso"
+                                                name="PESOQ1"
+                                                id="PESOQ1"
+                                                style="width: 100px; padding-left: 30px;">
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <label for="nomeprova" class="form-label">Questão-12</label>
+                                        <div class="mb-3">
+                                            <button
+                                                type="button"
+                                                class="btn btn-outline-success btn-sm"
+                                                data-bs-toggle="button"
+                                                aria-pressed="true">A</button>
+                                            <button
+                                                type="button"
+                                                class="btn btn-outline-success btn-sm"
+                                                data-bs-toggle="button"
+                                                aria-pressed="true">B</button>
+                                            <button
+                                                type="button"
+                                                class="btn btn-outline-success btn-sm"
+                                                data-bs-toggle="button"
+                                                aria-pressed="true">c</button>
+                                            <button
+                                                type="button"
+                                                class="btn btn-outline-success btn-sm"
+                                                data-bs-toggle="button"
+                                                aria-pressed="true">D</button>
+                                            <button
+                                                type="button"
+                                                class="btn btn-outline-success btn-sm"
+                                                data-bs-toggle="button"
+                                                aria-pressed="true">E</button>
+                                            <input
+                                                type="text"
+                                                class="form-control"
+                                                aria-label="Username"
+                                                aria-describedby="basic-addon2"
+                                                placeholder="Peso"
+                                                name="PESOQ1"
+                                                id="PESOQ1"
+                                                style="width: 100px; padding-left: 30px;">
+                                        </div>
+                                    </div>   
+                                </div>
 
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" 
-                    integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" 
-                    crossorigin="anonymous"></script>
-    </body>
-</html>
+                                <div class="row">
+                                    <div class="col">
+                                        <label for="nomeprova" class="form-label">Questão-13</label>
+                                        <div class="mb-3">
+                                            <button
+                                                type="button"
+                                                class="btn btn-outline-success btn-sm"
+                                                data-bs-toggle="button"
+                                                aria-pressed="true">A</button>
+                                            <button
+                                                type="button"
+                                                class="btn btn-outline-success btn-sm"
+                                                data-bs-toggle="button"
+                                                aria-pressed="true">B</button>
+                                            <button
+                                                type="button"
+                                                class="btn btn-outline-success btn-sm"
+                                                data-bs-toggle="button"
+                                                aria-pressed="true">c</button>
+                                            <button
+                                                type="button"
+                                                class="btn btn-outline-success btn-sm"
+                                                data-bs-toggle="button"
+                                                aria-pressed="true">D</button>
+                                            <button
+                                                type="button"
+                                                class="btn btn-outline-success btn-sm"
+                                                data-bs-toggle="button"
+                                                aria-pressed="true">E</button>
+                                            <input
+                                                type="text"
+                                                class="form-control"
+                                                aria-label="Username"
+                                                aria-describedby="basic-addon2"
+                                                placeholder="Peso"
+                                                name="PESOQ1"
+                                                id="PESOQ1"
+                                                style="width: 100px; padding-left: 30px;">
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <label for="nomeprova" class="form-label">Questão-14</label>
+                                        <div class="mb-3">
+                                            <button
+                                                type="button"
+                                                class="btn btn-outline-success btn-sm"
+                                                data-bs-toggle="button"
+                                                aria-pressed="true">A</button>
+                                            <button
+                                                type="button"
+                                                class="btn btn-outline-success btn-sm"
+                                                data-bs-toggle="button"
+                                                aria-pressed="true">B</button>
+                                            <button
+                                                type="button"
+                                                class="btn btn-outline-success btn-sm"
+                                                data-bs-toggle="button"
+                                                aria-pressed="true">c</button>
+                                            <button
+                                                type="button"
+                                                class="btn btn-outline-success btn-sm"
+                                                data-bs-toggle="button"
+                                                aria-pressed="true">D</button>
+                                            <button
+                                                type="button"
+                                                class="btn btn-outline-success btn-sm"
+                                                data-bs-toggle="button"
+                                                aria-pressed="true">E</button>
+                                            <input
+                                                type="text"
+                                                class="form-control"
+                                                aria-label="Username"
+                                                aria-describedby="basic-addon2"
+                                                placeholder="Peso"
+                                                name="PESOQ1"
+                                                id="PESOQ1"
+                                                style="width: 100px; padding-left: 30px;">
+                                        </div>
+                                    </div>   
+                                </div>
+
+                                <div class="row">
+                                    <div class="col">
+                                        <label for="nomeprova" class="form-label">Questão-15</label>
+                                        <div class="mb-3">
+                                            <button
+                                                type="button"
+                                                class="btn btn-outline-success btn-sm"
+                                                data-bs-toggle="button"
+                                                aria-pressed="true">A</button>
+                                            <button
+                                                type="button"
+                                                class="btn btn-outline-success btn-sm"
+                                                data-bs-toggle="button"
+                                                aria-pressed="true">B</button>
+                                            <button
+                                                type="button"
+                                                class="btn btn-outline-success btn-sm"
+                                                data-bs-toggle="button"
+                                                aria-pressed="true">c</button>
+                                            <button
+                                                type="button"
+                                                class="btn btn-outline-success btn-sm"
+                                                data-bs-toggle="button"
+                                                aria-pressed="true">D</button>
+                                            <button
+                                                type="button"
+                                                class="btn btn-outline-success btn-sm"
+                                                data-bs-toggle="button"
+                                                aria-pressed="true">E</button>
+                                            <input
+                                                type="text"
+                                                class="form-control"
+                                                aria-label="Username"
+                                                aria-describedby="basic-addon2"
+                                                placeholder="Peso"
+                                                name="PESOQ1"
+                                                id="PESOQ1"
+                                                style="width: 100px; padding-left: 30px;">
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <label for="nomeprova" class="form-label">Questão-16</label>
+                                        <div class="mb-3">
+                                            <button
+                                                type="button"
+                                                class="btn btn-outline-success btn-sm"
+                                                data-bs-toggle="button"
+                                                aria-pressed="true">A</button>
+                                            <button
+                                                type="button"
+                                                class="btn btn-outline-success btn-sm"
+                                                data-bs-toggle="button"
+                                                aria-pressed="true">B</button>
+                                            <button
+                                                type="button"
+                                                class="btn btn-outline-success btn-sm"
+                                                data-bs-toggle="button"
+                                                aria-pressed="true">c</button>
+                                            <button
+                                                type="button"
+                                                class="btn btn-outline-success btn-sm"
+                                                data-bs-toggle="button"
+                                                aria-pressed="true">D</button>
+                                            <button
+                                                type="button"
+                                                class="btn btn-outline-success btn-sm"
+                                                data-bs-toggle="button"
+                                                aria-pressed="true">E</button>
+                                            <input
+                                                type="text"
+                                                class="form-control"
+                                                aria-label="Username"
+                                                aria-describedby="basic-addon2"
+                                                placeholder="Peso"
+                                                name="PESOQ1"
+                                                id="PESOQ1"
+                                                style="width: 100px; padding-left: 30px;">
+                                        </div>
+                                    </div>   
+                                </div>
+
+                                <div class="row">
+                                    <div class="col">
+                                        <label for="nomeprova" class="form-label">Questão-17</label>
+                                        <div class="mb-3">
+                                            <button
+                                                type="button"
+                                                class="btn btn-outline-success btn-sm"
+                                                data-bs-toggle="button"
+                                                aria-pressed="true">A</button>
+                                            <button
+                                                type="button"
+                                                class="btn btn-outline-success btn-sm"
+                                                data-bs-toggle="button"
+                                                aria-pressed="true">B</button>
+                                            <button
+                                                type="button"
+                                                class="btn btn-outline-success btn-sm"
+                                                data-bs-toggle="button"
+                                                aria-pressed="true">c</button>
+                                            <button
+                                                type="button"
+                                                class="btn btn-outline-success btn-sm"
+                                                data-bs-toggle="button"
+                                                aria-pressed="true">D</button>
+                                            <button
+                                                type="button"
+                                                class="btn btn-outline-success btn-sm"
+                                                data-bs-toggle="button"
+                                                aria-pressed="true">E</button>
+                                            <input
+                                                type="text"
+                                                class="form-control"
+                                                aria-label="Username"
+                                                aria-describedby="basic-addon2"
+                                                placeholder="Peso"
+                                                name="PESOQ1"
+                                                id="PESOQ1"
+                                                style="width: 100px; padding-left: 30px;">
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <label for="nomeprova" class="form-label">Questão-18</label>
+                                        <div class="mb-3">
+                                            <button
+                                                type="button"
+                                                class="btn btn-outline-success btn-sm"
+                                                data-bs-toggle="button"
+                                                aria-pressed="true">A</button>
+                                            <button
+                                                type="button"
+                                                class="btn btn-outline-success btn-sm"
+                                                data-bs-toggle="button"
+                                                aria-pressed="true">B</button>
+                                            <button
+                                                type="button"
+                                                class="btn btn-outline-success btn-sm"
+                                                data-bs-toggle="button"
+                                                aria-pressed="true">c</button>
+                                            <button
+                                                type="button"
+                                                class="btn btn-outline-success btn-sm"
+                                                data-bs-toggle="button"
+                                                aria-pressed="true">D</button>
+                                            <button
+                                                type="button"
+                                                class="btn btn-outline-success btn-sm"
+                                                data-bs-toggle="button"
+                                                aria-pressed="true">E</button>
+                                            <input
+                                                type="text"
+                                                class="form-control"
+                                                aria-label="Username"
+                                                aria-describedby="basic-addon2"
+                                                placeholder="Peso"
+                                                name="PESOQ1"
+                                                id="PESOQ1"
+                                                style="width: 100px; padding-left: 30px;">
+                                        </div>
+                                    </div>   
+                                </div>
+
+                                <div class="row">
+                                    <div class="col">
+                                        <label for="nomeprova" class="form-label">Questão-19</label>
+                                        <div class="mb-3">
+                                            <button
+                                                type="button"
+                                                class="btn btn-outline-success btn-sm"
+                                                data-bs-toggle="button"
+                                                aria-pressed="true">A</button>
+                                            <button
+                                                type="button"
+                                                class="btn btn-outline-success btn-sm"
+                                                data-bs-toggle="button"
+                                                aria-pressed="true">B</button>
+                                            <button
+                                                type="button"
+                                                class="btn btn-outline-success btn-sm"
+                                                data-bs-toggle="button"
+                                                aria-pressed="true">c</button>
+                                            <button
+                                                type="button"
+                                                class="btn btn-outline-success btn-sm"
+                                                data-bs-toggle="button"
+                                                aria-pressed="true">D</button>
+                                            <button
+                                                type="button"
+                                                class="btn btn-outline-success btn-sm"
+                                                data-bs-toggle="button"
+                                                aria-pressed="true">E</button>
+                                            <input
+                                                type="text"
+                                                class="form-control"
+                                                aria-label="Username"
+                                                aria-describedby="basic-addon2"
+                                                placeholder="Peso"
+                                                name="PESOQ1"
+                                                id="PESOQ1"
+                                                style="width: 100px; padding-left: 30px;">
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <label for="nomeprova" class="form-label">Questão-20</label>
+                                        <div class="mb-3">
+                                            <button
+                                                type="button"
+                                                class="btn btn-outline-success btn-sm"
+                                                data-bs-toggle="button"
+                                                aria-pressed="true">A</button>
+                                            <button
+                                                type="button"
+                                                class="btn btn-outline-success btn-sm"
+                                                data-bs-toggle="button"
+                                                aria-pressed="true">B</button>
+                                            <button
+                                                type="button"
+                                                class="btn btn-outline-success btn-sm"
+                                                data-bs-toggle="button"
+                                                aria-pressed="true">c</button>
+                                            <button
+                                                type="button"
+                                                class="btn btn-outline-success btn-sm"
+                                                data-bs-toggle="button"
+                                                aria-pressed="true">D</button>
+                                            <button
+                                                type="button"
+                                                class="btn btn-outline-success btn-sm"
+                                                data-bs-toggle="button"
+                                                aria-pressed="true">E</button>
+                                            <input
+                                                type="text"
+                                                class="form-control"
+                                                aria-label="Username"
+                                                aria-describedby="basic-addon2"
+                                                placeholder="Peso"
+                                                name="PESOQ1"
+                                                id="PESOQ1"
+                                                style="width: 100px; padding-left: 30px;">
+                                        </div>
+                                    </div>   
+                                </div>
+
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <script
+                src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+                integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
+                crossorigin="anonymous"></script>
+        </body>
+    </html>

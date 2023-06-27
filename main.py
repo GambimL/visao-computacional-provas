@@ -1,10 +1,24 @@
 from imagem import imagem
 import cv2
-from flask import Flask, render_template, redirect, request
+from flask import Flask, render_template, redirect, request, Response
 import numpy as np
 
 
 app = Flask(__name__)
+webcam = cv2.VideoCapture(0)
+
+def generate_frames():
+    while True:
+        validation, frame = webcam.read()
+        if not validation:
+            break
+        else:
+           ret, buffer =  cv2.imencode('.jpg', frame)
+           frame = buffer.tobytes()
+        yield(b'--frame\r\n' b'contente-type: image/jpeg\r\n\r\n' + frame + b'\r\n')
+        
+
+
 
 @app.route('/')
 def index():
@@ -24,7 +38,12 @@ def corretor():
     cv2.imshow('', imagem_pronta)
     cv2.waitKey(0)
 
-    return redirect('/')
+    return redirect('/corrigirprovas')
+
+
+@app.route('/video')
+def video():
+    return Response(generate_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
 
 
 @app.route('/corrigirprovas')

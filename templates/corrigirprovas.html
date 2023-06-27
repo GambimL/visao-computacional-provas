@@ -10,7 +10,14 @@
     </head>
     <body>
         <div>
-            <img src="{{ url_for( 'video' ) }}" style="width: 50%;">
+
+            <div class="container text-center">
+                <form action="\corretor" method="post">
+                    <img src="{{ url_for( 'video' ) }}" class="img-fluid">
+                    <button type="submit" class="btn btn-primary">Enviar</button>
+                </form>
+            </div>
         </div>
+
     </body>
 </html>

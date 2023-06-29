@@ -21,9 +21,8 @@ class imagem:
         gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
         blurred = cv2.GaussianBlur(gray, (5, 5), 0)
         edged = cv2.Canny(blurred, 75, 200)
-        kernel = np.ones((10,10),np.uint8)
+        kernel = np.ones((2,2),np.uint8)
         edged = cv2.dilate(edged,kernel,iterations = 1)
-
         cnts = cv2.findContours(edged.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
         cnts = imutils.grab_contours(cnts)
         doCnt = None
@@ -37,13 +36,15 @@ class imagem:
                 if len(approx == 4):
                     doCnt = approx
                     break
-        paper = four_point_transform(image, doCnt.reshape(4, 2))
-        warped = four_point_transform(gray, doCnt.reshape(4, 2))
 
-        warped1 = warped[40:2270, 50:1250]
-        warped2 = warped[43:2270, 1450:2670]
-        warped1 = cv2.resize(warped1, dsize=(390, 756))
-        warped2 = cv2.resize(warped2, dsize=(390, 756))
+        warped = four_point_transform(gray, doCnt.reshape(4, 2))
+        cv2.drawContours(image, warped, 0, 255, 0)
+        warped = cv2.resize(warped, dsize=(650, 700))
+        
+        
+
+        warped1 = warped[60:700, 20:300]
+        warped2 = warped[60:685, 300:620]
         imagens_cortadas = [warped1, warped2]
 
         imagens_pre_processadas = []
@@ -52,16 +53,17 @@ class imagem:
             kernel = np.ones((4,4),np.uint8)
             thresh = cv2.dilate(thresh,kernel,iterations = 1)
             imagens_pre_processadas.append(thresh)
+            cv2.imshow('', thresh)
+            cv2.waitKey(0)
 
 
         paper = four_point_transform(image, doCnt.reshape(4, 2))
-        paper2 = paper[43:2270, 1450:2670]
-        paper1 = paper[40:2270, 50:1250]
-        paper2 = cv2.resize(paper2, dsize=(379, 756))
-        paper1 = cv2.resize(paper1, dsize=(390, 756))
+        paper = cv2.resize(paper, dsize=(650, 700))
+        paper2 = paper[60:685, 300:620]
+        paper1 = paper[60:700, 20:300]
         papers = [paper1, paper2]
 
-        return imagens_pre_processadas, papers
+        return imagens_pre_processadas, papers, warped
         
     
     def processa_imagem(self, ANSWER_KEY, processadas, papers):
@@ -103,7 +105,7 @@ class imagem:
 
                 cv2.drawContours(papers[l], [cnts[k]], -1, cor, 2)
 
-        return correct, papers
+        return correct, papers[l]
         
     def set_imagem(self, img):
         self.imagem = img

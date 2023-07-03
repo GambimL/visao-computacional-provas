@@ -2,11 +2,35 @@ from imagem import imagem
 import cv2
 from tkinter import *
 from tkinter import ttk
+from Janelas import *
 
 def main():
     
     webcam = cv2.VideoCapture(0)
 
+    window = Tk()
+    window.title('Corretor de Provas')
+    window.config(padx=10, pady=10)
+
+    gabarito = Button(text = 'Criar Gabarito', 
+                      width = 20 ,
+                      command = criar_gabarito)
+
+    gabarito.pack()
+    corrigir = Button(text = 'corrigir provas', 
+                      width = 20 ,
+                      command = corrigir_provas)
+    
+    corrigir.pack()
+    Dados = Button(text = 'Dados', 
+                      width = 20 ,
+                      command = dados)
+
+    Dados.pack()
+
+    
+
+    window.mainloop()
     def generate_frames():
         while True:
             validation, frame = webcam.read()

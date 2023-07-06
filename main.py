@@ -6,7 +6,7 @@ from Janelas import *
 
 def main():
     
-    webcam = cv2.VideoCapture(0)
+
 
     window = Tk()
     window.title('Corretor de Provas')

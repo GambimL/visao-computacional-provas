@@ -3,6 +3,7 @@ import cv2
 from tkinter import *
 from tkinter import ttk
 from dataframes import criar_dataframe
+import os
 
 
 
@@ -342,14 +343,29 @@ def criar_gabarito():
     peso20.insert(0, 'Peso')
     peso20.pack()
 
-  
-
-
-
-
 
     salvar = Button(window, text='Salvar Gabarito', command= executar_comando)
     salvar.pack(pady=20)
+
+    frame_tabela = Frame(window)
+    frame_tabela.pack(side = 'top', padx= 30, pady=30)
+
+    gabaritos = os.listdir(path='C:/Users/usuario/Desktop/visãoprovas/bancodedados')
+    tv = ttk.Treeview(frame_tabela)
+    tv['columns'] = ('numero', 'Gabarito')
+    tv.column('#0', width=0, stretch=NO)
+    tv.column('numero', anchor=CENTER, width=80)
+    tv.column('Gabarito',anchor=CENTER, width=200)
+    tv.heading('#0', text='', anchor=CENTER)
+    tv.heading('numero', text='Id', anchor=CENTER)
+    tv.heading('Gabarito', text='Gabarito', anchor=CENTER)
+    for i in range(len(gabaritos)):
+        tv.insert(parent='', index=i, iid=i, text='', values=(i, gabaritos[i]))
+    tv.pack()
+
+    window.mainloop()
+
+
     
 
 
@@ -374,6 +390,28 @@ def dados():
 
     
 
+
+    window.mainloop()
+
+def Atualizar():
+    window = Tk()
+
+
+    frame_tabela = Frame(window)
+    frame_tabela.pack(side = 'top', padx= 30, pady=30)
+
+    gabaritos = os.listdir(path='C:/Users/usuario/Desktop/visãoprovas/bancodedados')
+    tv = ttk.Treeview(frame_tabela)
+    tv['columns'] = ('numero', 'Gabarito')
+    tv.column('#0', width=0, stretch=NO)
+    tv.column('numero', anchor=CENTER, width=80)
+    tv.column('Gabarito',anchor=CENTER, width=200)
+    tv.heading('#0', text='', anchor=CENTER)
+    tv.heading('numero', text='Id', anchor=CENTER)
+    tv.heading('Gabarito', text='Gabarito', anchor=CENTER)
+    for i in range(len(gabaritos)):
+        tv.insert(parent='', index=i, iid=i, text='', values=(i, gabaritos[i]))
+    tv.pack()
 
     window.mainloop()
 

@@ -9,4 +9,3 @@ def criar_dataframe(nome, questoes, pesos):
     os.makedirs('C:/Users/usuario/Desktop/visãoprovas/bancodedados', exist_ok=True)
     provas.to_excel(f'C:/Users/usuario/Desktop/visãoprovas/bancodedados/{nome}.xlsx')
  
-

@@ -2,7 +2,7 @@ from imagem import imagem
 import cv2
 from tkinter import *
 from tkinter import ttk
-from dataframes import criar_dataframe
+from dataframes import *
 import os
 
 
@@ -343,9 +343,9 @@ def criar_gabarito():
     peso20.insert(0, 'Peso')
     peso20.pack()
 
+    # frame_botoes = Frame(window)
+    # frame_botoes.Pack()
 
-    salvar = Button(window, text='Salvar Gabarito', command= executar_comando)
-    salvar.pack(pady=20)
 
     frame_tabela = Frame(window)
     frame_tabela.pack(side = 'top', padx= 30, pady=30)
@@ -362,15 +362,40 @@ def criar_gabarito():
     for i in range(len(gabaritos)):
         tv.insert(parent='', index=i, iid=i, text='', values=(i, gabaritos[i]))
     tv.pack()
-
-    window.mainloop()
-
-
     
 
+    def obter_valores_da_tabela():
+        data_frame = tv.selection()[0]
+        values = tv.item(data_frame, 'values')
+        questoes, pesos = obter_dataframe(f'bancodedados/{values[1]}')
+        imput.insert(0,f'{values[1]}' )
+        caixa_questao1.insert(0,f' {questoes[0]}')
+        caixa_questao2.insert(0,f' {questoes[1]}')
+        caixa_questao3.insert(0,f' {questoes[2]}')
+        caixa_questao4.insert(0,f' {questoes[3]}')
+        caixa_questao5.insert(0,f' {questoes[4]}')
+        caixa_questao6.insert(0,f' {questoes[5]}')
+        caixa_questao7.insert(0,f' {questoes[6]}')
+        caixa_questao8.insert(0,f' {questoes[7]}')
+        caixa_questao9.insert(0,f' {questoes[8]}')
+        caixa_questao10.insert(0,f' {questoes[9]}')
+        caixa_questao11.insert(0,f' {questoes[10]}')
+        caixa_questao12.insert(0,f' {questoes[11]}')
+        caixa_questao13.insert(0,f' {questoes[12]}')
+        caixa_questao14.insert(0,f' {questoes[13]}')
+        caixa_questao15.insert(0,f' {questoes[14]}')
+        caixa_questao16.insert(0,f' {questoes[15]}')
+        caixa_questao17.insert(0,f' {questoes[16]}')
+        caixa_questao18.insert(0,f' {questoes[17]}')
+        caixa_questao19.insert(0,f' {questoes[18]}')
+        caixa_questao20.insert(0,f' {questoes[19]}')
+        
 
 
-    criar_dataframe()
+
+    obter = Button(window, text='Obter', command=obter_valores_da_tabela)
+    obter.pack(side = 'left')
+
     
 
 

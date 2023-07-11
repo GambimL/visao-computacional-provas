@@ -22,4 +22,16 @@ def obter_dataframe(dataframename):
     
     return questoes, pesos
 
+def atualizar_dataframe(dataframename, questoesnovas, pesosnovos):
+    planilhas =  pd.read_excel(f'bancodedados/{dataframename}')
+
+    for i in range(20):
+        planilhas.loc[i, 'Questões'] = questoesnovas[i]
+        planilhas.loc[i, 'Peso'] = pesosnovos[i]
+
+    os.makedirs('C:/Users/usuario/Desktop/visãoprovas/bancodedados', exist_ok=True)
+    planilhas.to_excel(f'C:/Users/usuario/Desktop/visãoprovas/bancodedados/{dataframename}')
+    
+
+
     

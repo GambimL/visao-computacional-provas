@@ -34,11 +34,7 @@ def main():
                       width = 20 ,
                       command = dados)
     Dados.pack(side ='left', padx=30)
-    
-    atualizar = Button(frame_botoes, text = 'Atualizar', 
-                      width = 20 ,
-                      command = Atualizar)
-    atualizar.pack(side = 'left')
+
 
     frame_tabela = Frame(window)
     frame_tabela.pack(side = 'top', padx= 30, pady=30)
@@ -57,26 +53,6 @@ def main():
     tv.pack()  
 
     window.mainloop()
-    def generate_frames():
-        while True:
-            validation, frame = webcam.read()
-            if not validation:
-                break
-            else:
-                ret, buffer =  cv2.imencode('.jpg', frame)
-                frame = buffer.tobytes()
-
-
-    ANSWER_KEY = [{0: 0, 1: 0, 2: 0, 3: 3, 4: 1, 5: 3, 6: 3, 7: 2, 8: 2, 9: 2}, 
-                  {0: 1, 1: 0, 2: 0, 3: 3, 4: 1, 5: 3, 6: 3, 7: 2, 8: 2, 9: 2}]
-    
-    img = cv2.imread('IMG_6841 (1).JPG')
-    image = imagem(img)
-    processadas, papers = image.pre_processa_imagem()
-    pontuação, papers = image.processa_imagem(ANSWER_KEY, processadas, papers)
-    imagem_pronta = cv2.hconcat(papers)
-    cv2.imshow('', imagem_pronta)
-    cv2.waitKey(0)
 
 
 if(__name__ == "__main__"):

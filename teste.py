@@ -4,5 +4,7 @@ import cv2
 import numpy as np
 import os 
 
-valores = os.listdir(path='/bancodedados')
-type(valores)
+string = 'gabarito_teste4[Ciências Humanas]'
+print(string.find('['))
+print(string.find(']'))
+print(string[string.find('[')+1:string.find(']')])

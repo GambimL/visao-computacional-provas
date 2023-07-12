@@ -4,6 +4,11 @@ from tkinter import *
 from tkinter import ttk
 from dataframes import *
 import os
+from imutils.perspective import four_point_transform
+from imutils import contours
+import imutils
+import numpy as np
+
 
 
 
@@ -11,9 +16,10 @@ import os
 def criar_gabarito():
 
     def executar_comando():
+
+
+        area = str(caixa_materias.get())
         nome_gabarito = str(imput.get())
-
-
         questoes_marcadas.append(caixa_questao1.get())
         peso_questoes.append(peso1.get())
         questoes_marcadas.append(caixa_questao2.get())
@@ -57,7 +63,8 @@ def criar_gabarito():
 
         print(questoes_marcadas)
 
-        criar_dataframe(nome_gabarito, questoes_marcadas, peso_questoes)
+        
+        criar_dataframe(nome_gabarito, questoes_marcadas, peso_questoes, area)
 
     def obter_valores_da_tabela():
 
@@ -84,11 +91,21 @@ def criar_gabarito():
         caixa_questao19.delete(0, END)
         caixa_questao20.delete(0, END)
 
+  
 
         data_frame = tv.selection()[0]
         values = tv.item(data_frame, 'values')
         questoes, pesos = obter_dataframe(f'bancodedados/{values[1]}')
-        imput.insert(0,f'{values[1]}')
+
+        retirar = values[1][values[1].find('[')::]
+        gabarito = values[1].replace(retirar,'')
+        imput.insert(0, gabarito)
+
+        limite_inferior = values[1].find('[')
+        limite_superior = values[1].find(']')
+        materia = values[1][limite_inferior+1:limite_superior]
+        caixa_materias.insert(0, materia)
+
         caixa_questao1.insert(0,f' {questoes[0]}')
         caixa_questao2.insert(0,f' {questoes[1]}')
         caixa_questao3.insert(0,f' {questoes[2]}')
@@ -423,7 +440,54 @@ def criar_gabarito():
 
 
 def corrigir_provas():
+    webcam = cv2.VideoCapture(0)
+    def generate_frames():
+        if webcam.isOpened():
+            validacao, frame = webcam.read()
+        while validacao:
+            validacao, frame = webcam.read()
+            gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+            blurred = cv2.GaussianBlur(gray, (5, 5), 0)
+            edged = cv2.Canny(blurred, 75, 200)
+            kernel = np.ones((2,2),np.uint8)
+            edged = cv2.dilate(edged,kernel,iterations = 1)
+            cnts = cv2.findContours(edged.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+            cnts = imutils.grab_contours(cnts)
+            doCnt = None
+
+            if len(cnts) > 0:
+                cnts = sorted(cnts, key=cv2.contourArea, reverse=True)
+                for c in cnts:
+                    peri = cv2.arcLength(c, True)
+                    approx = cv2.approxPolyDP(c, 0.02 * peri, True)
+
+                    if len(approx == 4):
+                        doCnt = approx
+                        cv2.drawContours(frame, [doCnt], 0, 255, 0)
+                    break
+
+
+            cv2.imshow("Video da Webcam", frame)
+            key = cv2.waitKey(5)
+            if key == 27: # ESC
+                break
+    
+    
     window = Tk()
+    camera = Button(window, text='Abrir camêra', command=generate_frames, width=20)
+    camera.pack()
+
+    ANSWER_KEY = [{0: 0, 1: 0, 2: 0, 3: 3, 4: 1, 5: 3, 6: 3, 7: 2, 8: 2, 9: 2}, 
+                  {0: 1, 1: 0, 2: 0, 3: 3, 4: 1, 5: 3, 6: 3, 7: 2, 8: 2, 9: 2}]
+    
+    img = cv2.imread('IMG_6841 (1).JPG')
+    image = imagem(img)
+    processadas, papers = image.pre_processa_imagem()
+    pontuação, papers = image.processa_imagem(ANSWER_KEY, processadas, papers)
+    imagem_pronta = cv2.hconcat(papers)
+    cv2.imshow('', imagem_pronta)
+    cv2.waitKey(0)
+
 
     
 
@@ -438,27 +502,7 @@ def dados():
 
     window.mainloop()
 
-def Atualizar():
-    window = Tk()
 
-
-    frame_tabela = Frame(window)
-    frame_tabela.pack(side = 'top', padx= 30, pady=30)
-
-    gabaritos = os.listdir(path='C:/Users/usuario/Desktop/visãoprovas/bancodedados')
-    tv = ttk.Treeview(frame_tabela)
-    tv['columns'] = ('numero', 'Gabarito')
-    tv.column('#0', width=0, stretch=NO)
-    tv.column('numero', anchor=CENTER, width=80)
-    tv.column('Gabarito',anchor=CENTER, width=200)
-    tv.heading('#0', text='', anchor=CENTER)
-    tv.heading('numero', text='Id', anchor=CENTER)
-    tv.heading('Gabarito', text='Gabarito', anchor=CENTER)
-    for i in range(len(gabaritos)):
-        tv.insert(parent='', index=i, iid=i, text='', values=(i, gabaritos[i]))
-    tv.pack()
-
-    window.mainloop()
 
 
 

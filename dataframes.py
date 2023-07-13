@@ -5,6 +5,7 @@ def criar_dataframe(nome, questoes, pesos, area):
     provas = pd.DataFrame({'Questões': questoes, 
                         'Peso': pesos }, 
                         columns = ['Questões', 'Peso'])
+
     
     os.makedirs('C:/Users/usuario/Desktop/visãoprovas/bancodedados', exist_ok=True)
     provas.to_excel(f'C:/Users/usuario/Desktop/visãoprovas/bancodedados/{nome}[{area}].xlsx')

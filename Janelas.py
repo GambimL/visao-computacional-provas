@@ -66,6 +66,7 @@ def criar_gabarito():
         
         criar_dataframe(nome_gabarito, questoes_marcadas, peso_questoes, area)
 
+
     def obter_valores_da_tabela():
 
 
@@ -95,7 +96,7 @@ def criar_gabarito():
 
         data_frame = tv.selection()[0]
         values = tv.item(data_frame, 'values')
-        questoes, pesos = obter_dataframe(f'bancodedados/{values[1]}')
+        questoes, pesos = obter_dataframe(f'bancodedados/{values[1]}.xlsx')
 
         retirar = values[1][values[1].find('[')::]
         gabarito = values[1].replace(retirar,'')
@@ -415,23 +416,27 @@ def criar_gabarito():
     obter.pack(side = 'left')
 
 
-
-
-
     frame_tabela = Frame(window)
     frame_tabela.pack(side = 'top', padx= 30, pady=30)
 
     gabaritos = os.listdir(path='C:/Users/usuario/Desktop/visãoprovas/bancodedados')
+    gabarito_corrigido =  []
+    for gabarito in gabaritos:
+        retirar = gabarito[gabarito.find('.')::]
+        gabarito = gabarito.replace(retirar, '')
+        gabarito_corrigido.append(gabarito)
+    
+
     tv = ttk.Treeview(frame_tabela)
     tv['columns'] = ('numero', 'Gabarito')
     tv.column('#0', width=0, stretch=NO)
     tv.column('numero', anchor=CENTER, width=80)
-    tv.column('Gabarito',anchor=CENTER, width=200)
+    tv.column('Gabarito',anchor=CENTER, width=400)
     tv.heading('#0', text='', anchor=CENTER)
     tv.heading('numero', text='Id', anchor=CENTER)
-    tv.heading('Gabarito', text='Gabarito', anchor=CENTER)
-    for i in range(len(gabaritos)):
-        tv.insert(parent='', index=i, iid=i, text='', values=(i, gabaritos[i]))
+    tv.heading('Gabarito', text='Gabarito', anchor=N)
+    for i in range(len(gabarito_corrigido)):
+        tv.insert(parent='', index=i, iid=i, text='', values=(i, gabarito_corrigido[i]))
     tv.pack()
     
 
@@ -469,13 +474,98 @@ def corrigir_provas():
 
             cv2.imshow("Video da Webcam", frame)
             key = cv2.waitKey(5)
+            cv2.imshow("Video da Webcam", edged)
+            key = cv2.waitKey(100)
             if key == 27: # ESC
                 break
     
+
+    def obter_gabaritos():
+        nome_gabarito = str(caixa_gabaritos.get())
+        questoes, pesos = obter_dataframe(f'bancodedados/{nome_gabarito}.xlsx')
+        alternativas = []
+
+
+        
+        for questao in questoes:
+                questao = questao.replace(' ', '')
+                if questao == 'A':
+                    alternativas.append(1)
+                elif questao == 'B':
+                    alternativas.append(2)
+                elif questao == 'C':
+                    alternativas.append(3)
+                elif questao == 'D':
+                    alternativas.append(4)
+                elif questao == 'E':
+                    alternativas.append(5)
+
+        
+        for i in range(len(alternativas)):
+            tv.insert(parent='', index=i, iid=i, text='', values=(f'Qestão{i+1}', questoes[i]))
+
+        
+
+        
+
+            
+
+
+        
     
     window = Tk()
-    camera = Button(window, text='Abrir camêra', command=generate_frames, width=20)
+    window.config(padx=100, pady=100)
+
+    frame_tabela = Frame(window)
+    frame_tabela.pack(side = 'left')
+    gabaritos = os.listdir(path='C:/Users/usuario/Desktop/visãoprovas/bancodedados')
+    gabarito_corrigido =  []
+    for gabarito in gabaritos:
+        retirar = gabarito[gabarito.find('.')::]
+        gabarito = gabarito.replace(retirar, '')
+        gabarito_corrigido.append(gabarito)
+    
+
+
+        
+    caixa_gabaritos = ttk.Combobox(frame_tabela, value=gabarito_corrigido, width=45)
+    caixa_gabaritos.pack()
+
+    selecionar_gabarito = Button(frame_tabela, text='Selecionar Gabarito', command=obter_gabaritos, width=20)
+    selecionar_gabarito.pack()
+
+
+    tv = ttk.Treeview(frame_tabela)
+    tv['columns'] = ('numero', 'Gabarito')
+    tv.column('#0', width=0, stretch=NO)
+    tv.column('numero', anchor=CENTER, width=80)
+    tv.column('Gabarito',anchor=CENTER, width=200)
+    tv.heading('#0', text='', anchor=CENTER)
+    tv.heading('numero', text='Id', anchor=CENTER)
+    tv.heading('Gabarito', text='Gabarito', anchor=CENTER)
+    tv.pack()
+
+    frame_dados = Frame(window)
+    frame_dados.pack(side = 'left', padx=50)
+
+
+    camera = Button(frame_dados, text='Abrir camêra', command=generate_frames, width=20)
     camera.pack()
+
+    label_aluno = Label(frame_dados, text='Nome do Aluno',  anchor=W)
+    label_aluno.pack()
+    nome_aluno = Entry(frame_dados, width=30)
+    nome_aluno.pack()
+
+    label_nota = Label(frame_dados, text='Nota do Aluno', anchor=W)
+    label_nota.pack()
+    nota = Entry(frame_dados, width=30)
+    nota.pack()
+
+
+    
+
+
 
     ANSWER_KEY = [{0: 0, 1: 0, 2: 0, 3: 3, 4: 1, 5: 3, 6: 3, 7: 2, 8: 2, 9: 2}, 
                   {0: 1, 1: 0, 2: 0, 3: 3, 4: 1, 5: 3, 6: 3, 7: 2, 8: 2, 9: 2}]

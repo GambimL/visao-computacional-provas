@@ -419,7 +419,7 @@ def criar_gabarito():
     frame_tabela = Frame(window)
     frame_tabela.pack(side = 'top', padx= 30, pady=30)
 
-    gabaritos = os.listdir(path='C:/Users/USER/Desktop/Visao_provas/bancodedados')
+    gabaritos = os.listdir(path='C:/Users/usuario/Desktop/visãoprovas/bancodedados')
     gabarito_corrigido =  []
     for gabarito in gabaritos:
         retirar = gabarito[gabarito.find('.')::]
@@ -450,7 +450,7 @@ def corrigir_provas():
     def generate_frames():
         if webcam.isOpened():
             validacao, frame = webcam.read()
-            while validacao:
+        while validacao:
                 validacao, frame = webcam.read()
                 gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
                 blurred = cv2.GaussianBlur(gray, (5, 5), 0)
@@ -471,7 +471,7 @@ def corrigir_provas():
 
                         if len(approx == 4):
                             doCnt = approx
-                            cv2.drawContours(frame, [doCnt], 0, 255, 0)
+                            cv2.drawContours(frame, [doCnt],-1, (0, 0, 255), 2)
                     
 
                 cv2.imshow("Video da Webcam", frame)
@@ -481,19 +481,6 @@ def corrigir_provas():
 
         webcam.release()
         pre_processa_imagem(frame)
-
-<<<<<<< HEAD
-            cv2.imshow("Video da Webcam", frame)
-            key = cv2.waitKey(5)
-            # cv2.imshow("Video da Webcam", edged)
-            # key = cv2.waitKey(100)
-            if key == 27: # ESC
-                break
-=======
-            
-
-        
->>>>>>> a00a9836516c9e6742f812fd436b66ae196bce95
     
 
     def obter_gabaritos():
@@ -534,7 +521,7 @@ def corrigir_provas():
 
     frame_tabela = Frame(window)
     frame_tabela.pack(side = 'left')
-    gabaritos = os.listdir(path='C:/Users/USER/Desktop/Visao_provas/bancodedados')
+    gabaritos = os.listdir(path='C:/Users/usuario/Desktop/visãoprovas/bancodedados')
     gabarito_corrigido =  []
     for gabarito in gabaritos:
         retirar = gabarito[gabarito.find('.')::]
@@ -578,7 +565,6 @@ def corrigir_provas():
     nota = Entry(frame_dados, width=30)
     nota.pack()
 
-<<<<<<< HEAD
     tv2 = ttk.Treeview(frame_dados)
     tv2['columns'] = ('numero', 'Gabarito')
     tv2.column('#0', width=0, stretch=NO)
@@ -588,8 +574,6 @@ def corrigir_provas():
     tv2.heading('numero', text='Id', anchor=CENTER)
     tv2.heading('Gabarito', text='Gabarito', anchor=CENTER)
     tv2.pack()
-=======
->>>>>>> a00a9836516c9e6742f812fd436b66ae196bce95
     
 
 

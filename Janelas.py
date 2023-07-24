@@ -474,8 +474,8 @@ def corrigir_provas():
 
             cv2.imshow("Video da Webcam", frame)
             key = cv2.waitKey(5)
-            cv2.imshow("Video da Webcam", edged)
-            key = cv2.waitKey(100)
+            # cv2.imshow("Video da Webcam", edged)
+            # key = cv2.waitKey(100)
             if key == 27: # ESC
                 break
     
@@ -529,10 +529,10 @@ def corrigir_provas():
 
         
     caixa_gabaritos = ttk.Combobox(frame_tabela, value=gabarito_corrigido, width=45)
-    caixa_gabaritos.pack()
+    caixa_gabaritos.pack(pady = 20)
 
     selecionar_gabarito = Button(frame_tabela, text='Selecionar Gabarito', command=obter_gabaritos, width=20)
-    selecionar_gabarito.pack()
+    selecionar_gabarito.pack(pady = 20)
 
 
     tv = ttk.Treeview(frame_tabela)
@@ -549,7 +549,7 @@ def corrigir_provas():
     frame_dados.pack(side = 'left', padx=50)
 
 
-    camera = Button(frame_dados, text='Abrir camêra', command=generate_frames, width=20)
+    camera = Button(frame_dados, text='Abrir câmera', command=generate_frames, width=20)
     camera.pack()
 
     label_aluno = Label(frame_dados, text='Nome do Aluno',  anchor=W)
@@ -562,7 +562,15 @@ def corrigir_provas():
     nota = Entry(frame_dados, width=30)
     nota.pack()
 
-
+    tv2 = ttk.Treeview(frame_dados)
+    tv2['columns'] = ('numero', 'Gabarito')
+    tv2.column('#0', width=0, stretch=NO)
+    tv2.column('numero', anchor=CENTER, width=80)
+    tv2.column('Gabarito',anchor=CENTER, width=200)
+    tv2.heading('#0', text='', anchor=CENTER)
+    tv2.heading('numero', text='Id', anchor=CENTER)
+    tv2.heading('Gabarito', text='Gabarito', anchor=CENTER)
+    tv2.pack()
     
 
 

@@ -1,4 +1,4 @@
-from imagem import imagem
+from imagem import pre_processa_imagem
 import cv2
 from tkinter import *
 from tkinter import ttk
@@ -419,7 +419,7 @@ def criar_gabarito():
     frame_tabela = Frame(window)
     frame_tabela.pack(side = 'top', padx= 30, pady=30)
 
-    gabaritos = os.listdir(path='C:/Users/usuario/Desktop/visãoprovas/bancodedados')
+    gabaritos = os.listdir(path='C:/Users/USER/Desktop/Visao_provas/bancodedados')
     gabarito_corrigido =  []
     for gabarito in gabaritos:
         retirar = gabarito[gabarito.find('.')::]
@@ -445,39 +445,55 @@ def criar_gabarito():
 
 
 def corrigir_provas():
+    ANSWER_KEY = {0: 2, 1: 0, 2: 0, 3: 4, 4: 1, 5: 3, 6: 3, 7: 2, 8: 2, 9: 4, 10: 2, 11: 0, 12: 0, 13: 4, 14: 1, 15: 3, 16: 3, 17: 1, 18: 4, 19: 0}
     webcam = cv2.VideoCapture(0)
     def generate_frames():
         if webcam.isOpened():
             validacao, frame = webcam.read()
-        while validacao:
-            validacao, frame = webcam.read()
-            gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-            blurred = cv2.GaussianBlur(gray, (5, 5), 0)
-            edged = cv2.Canny(blurred, 75, 200)
-            kernel = np.ones((2,2),np.uint8)
-            edged = cv2.dilate(edged,kernel,iterations = 1)
-            cnts = cv2.findContours(edged.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-            cnts = imutils.grab_contours(cnts)
-            doCnt = None
+            while validacao:
+                validacao, frame = webcam.read()
+                gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+                blurred = cv2.GaussianBlur(gray, (5, 5), 0)
+                edged = cv2.Canny(blurred, 75, 200)
+                kernel = np.ones((2,2),np.uint8)
+                edged = cv2.dilate(edged,kernel,iterations = 1)
 
-            if len(cnts) > 0:
-                cnts = sorted(cnts, key=cv2.contourArea, reverse=True)
-                for c in cnts:
-                    peri = cv2.arcLength(c, True)
-                    approx = cv2.approxPolyDP(c, 0.02 * peri, True)
 
-                    if len(approx == 4):
-                        doCnt = approx
-                        cv2.drawContours(frame, [doCnt], 0, 255, 0)
+                cnts = cv2.findContours(edged.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+                cnts = imutils.grab_contours(cnts)
+                doCnt = None
+
+                if len(cnts) > 0:
+                    cnts = sorted(cnts, key=cv2.contourArea, reverse=True)
+                    for c in cnts:
+                        peri = cv2.arcLength(c, True)
+                        approx = cv2.approxPolyDP(c, 0.02 * peri, True)
+
+                        if len(approx == 4):
+                            doCnt = approx
+                            cv2.drawContours(frame, [doCnt], 0, 255, 0)
+                    
+
+                cv2.imshow("Video da Webcam", frame)
+                key = cv2.waitKey(5)
+                if key == 27: # ESC
                     break
 
+        webcam.release()
+        pre_processa_imagem(frame)
 
+<<<<<<< HEAD
             cv2.imshow("Video da Webcam", frame)
             key = cv2.waitKey(5)
             # cv2.imshow("Video da Webcam", edged)
             # key = cv2.waitKey(100)
             if key == 27: # ESC
                 break
+=======
+            
+
+        
+>>>>>>> a00a9836516c9e6742f812fd436b66ae196bce95
     
 
     def obter_gabaritos():
@@ -518,7 +534,7 @@ def corrigir_provas():
 
     frame_tabela = Frame(window)
     frame_tabela.pack(side = 'left')
-    gabaritos = os.listdir(path='C:/Users/usuario/Desktop/visãoprovas/bancodedados')
+    gabaritos = os.listdir(path='C:/Users/USER/Desktop/Visao_provas/bancodedados')
     gabarito_corrigido =  []
     for gabarito in gabaritos:
         retirar = gabarito[gabarito.find('.')::]
@@ -562,6 +578,7 @@ def corrigir_provas():
     nota = Entry(frame_dados, width=30)
     nota.pack()
 
+<<<<<<< HEAD
     tv2 = ttk.Treeview(frame_dados)
     tv2['columns'] = ('numero', 'Gabarito')
     tv2.column('#0', width=0, stretch=NO)
@@ -571,20 +588,14 @@ def corrigir_provas():
     tv2.heading('numero', text='Id', anchor=CENTER)
     tv2.heading('Gabarito', text='Gabarito', anchor=CENTER)
     tv2.pack()
+=======
+>>>>>>> a00a9836516c9e6742f812fd436b66ae196bce95
     
 
 
 
-    ANSWER_KEY = [{0: 0, 1: 0, 2: 0, 3: 3, 4: 1, 5: 3, 6: 3, 7: 2, 8: 2, 9: 2}, 
-                  {0: 1, 1: 0, 2: 0, 3: 3, 4: 1, 5: 3, 6: 3, 7: 2, 8: 2, 9: 2}]
+
     
-    img = cv2.imread('IMG_6841 (1).JPG')
-    image = imagem(img)
-    processadas, papers = image.pre_processa_imagem()
-    pontuação, papers = image.processa_imagem(ANSWER_KEY, processadas, papers)
-    imagem_pronta = cv2.hconcat(papers)
-    cv2.imshow('', imagem_pronta)
-    cv2.waitKey(0)
 
 
     

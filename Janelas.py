@@ -129,7 +129,7 @@ def criar_gabarito():
         caixa_questao20.insert(0,f' {questoes[19]}')
 
     window = Tk()
-    window.config(padx=50, pady=50)
+    window.config(padx=50, pady=50, bg='WHITE')
     pesos = []
     questoes = []
     caixa_questoes = []
@@ -419,7 +419,7 @@ def criar_gabarito():
     frame_tabela = Frame(window)
     frame_tabela.pack(side = 'top', padx= 30, pady=30)
 
-    gabaritos = os.listdir(path='C:/Users/usuario/Desktop/visãoprovas/bancodedados')
+    gabaritos = os.listdir(path='C:/Users/USER/Desktop/Visao_provas/bancodedados')
     gabarito_corrigido =  []
     for gabarito in gabaritos:
         retirar = gabarito[gabarito.find('.')::]
@@ -445,9 +445,38 @@ def criar_gabarito():
 
 
 def corrigir_provas():
-    ANSWER_KEY = {0: 2, 1: 0, 2: 0, 3: 4, 4: 1, 5: 3, 6: 3, 7: 2, 8: 2, 9: 4, 10: 2, 11: 0, 12: 0, 13: 4, 14: 1, 15: 3, 16: 3, 17: 1, 18: 4, 19: 0}
     webcam = cv2.VideoCapture(0)
-    def generate_frames():
+    def obter_gabaritos():
+        nome_gabarito = str(caixa_gabaritos.get())
+        questoes, pesos = obter_dataframe(f'bancodedados/{nome_gabarito}.xlsx')
+        alternativas = []
+
+
+        
+        for questao in questoes:
+                questao = questao.replace(' ', '')
+                if questao == 'A':
+                    alternativas.append(0)
+                elif questao == 'B':
+                    alternativas.append(1)
+                elif questao == 'C':
+                    alternativas.append(2)
+                elif questao == 'D':
+                    alternativas.append(3)
+                elif questao == 'E':
+                    alternativas.append(4)
+        return alternativas, questoes
+
+    def selecionar_gabarito():
+
+        alternativas, questoes = obter_gabaritos()
+        for i in range(len(alternativas)):
+            tv.insert(parent='', index=i, iid=i, text='', values=(f'Qestão{i+1}', questoes[i]))
+
+    def processar_gabarito():
+
+        alternativas, questoes = obter_gabaritos()
+
         if webcam.isOpened():
             validacao, frame = webcam.read()
         while validacao:
@@ -480,49 +509,15 @@ def corrigir_provas():
                     break
 
         webcam.release()
-        pre_processa_imagem(frame)
-    
-
-    def obter_gabaritos():
-        nome_gabarito = str(caixa_gabaritos.get())
-        questoes, pesos = obter_dataframe(f'bancodedados/{nome_gabarito}.xlsx')
-        alternativas = []
-
-
-        
-        for questao in questoes:
-                questao = questao.replace(' ', '')
-                if questao == 'A':
-                    alternativas.append(1)
-                elif questao == 'B':
-                    alternativas.append(2)
-                elif questao == 'C':
-                    alternativas.append(3)
-                elif questao == 'D':
-                    alternativas.append(4)
-                elif questao == 'E':
-                    alternativas.append(5)
-
-        
-        for i in range(len(alternativas)):
-            tv.insert(parent='', index=i, iid=i, text='', values=(f'Qestão{i+1}', questoes[i]))
-
-        
-
-        
-
-            
-
-
-        
+        pre_processa_imagem(frame, alternativas)
     
     window = Tk()
     window.config(padx=100, pady=100)
 
     frame_tabela = Frame(window)
     frame_tabela.pack(side = 'left')
-    gabaritos = os.listdir(path='C:/Users/usuario/Desktop/visãoprovas/bancodedados')
-    gabarito_corrigido =  []
+    gabaritos = os.listdir(path='C:/Users/USER/Desktop/Visao_provas/bancodedados')
+    gabarito_corrigido = []
     for gabarito in gabaritos:
         retirar = gabarito[gabarito.find('.')::]
         gabarito = gabarito.replace(retirar, '')
@@ -534,7 +529,7 @@ def corrigir_provas():
     caixa_gabaritos = ttk.Combobox(frame_tabela, value=gabarito_corrigido, width=45)
     caixa_gabaritos.pack(pady = 20)
 
-    selecionar_gabarito = Button(frame_tabela, text='Selecionar Gabarito', command=obter_gabaritos, width=20)
+    selecionar_gabarito = Button(frame_tabela, text='Selecionar Gabarito', command=selecionar_gabarito, width=20)
     selecionar_gabarito.pack(pady = 20)
 
 
@@ -552,7 +547,7 @@ def corrigir_provas():
     frame_dados.pack(side = 'left', padx=50)
 
 
-    camera = Button(frame_dados, text='Abrir câmera', command=generate_frames, width=20)
+    camera = Button(frame_dados, text='Abrir câmera', command=processar_gabarito, width=20)
     camera.pack()
 
     label_aluno = Label(frame_dados, text='Nome do Aluno',  anchor=W)

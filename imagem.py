@@ -40,7 +40,7 @@ def pre_processa_imagem(imagem, resposta):
     warped = warped[20:680, 10:627]
     paper = paper[20:680, 10:630]
     thresh = cv2.threshold(warped, 0, 255, cv2.THRESH_BINARY_INV | cv2.THRESH_OTSU)[1]
-    kernel = np.ones((4,4),np.uint8)
+    kernel = np.ones((2,2),np.uint8)
     thresh = cv2.dilate(thresh,kernel,iterations = 1)
 
     cnts = cv2.findContours(thresh.copy(), cv2.RETR_EXTERNAL,
@@ -52,10 +52,10 @@ def pre_processa_imagem(imagem, resposta):
         ar = w / float(h)
         if w >= 35 and h >= 35 and ar >= 0.9 and ar <= 1.1:
             questionsCnts.append(c)
-            cv2.drawContours(paper , questionsCnts, -1, (0, 225, 0), 2)
+           
             
-
-    cv2.imshow('foto gabarito', paper)
+    
+    # cv2.imshow('foto gabarito', paper)
     cv2.waitKey(0)           
     questionCnts = contours.sort_contours(questionsCnts, method = "top-to-bottom")[0]
     correct = 0

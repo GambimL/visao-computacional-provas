@@ -7,8 +7,8 @@ def criar_dataframe(nome, questoes, pesos, area):
                         columns = ['Questões', 'Peso'])
 
     
-    os.makedirs('C:/Users/USER/Desktop/Visao_provas/bancodedados', exist_ok=True)
-    provas.to_excel(f'C:/Users/USER/Desktop/Visao_provas/bancodedados{nome}[{area}].xlsx')
+    os.makedirs('C:/Users/usuario/Desktop/visãoprovas/bancodedados', exist_ok=True)
+    provas.to_excel(f'C:/Users/usuario/Desktop/visãoprovas/bancodedados{nome}[{area}].xlsx')
  
 
 
@@ -30,8 +30,8 @@ def atualizar_dataframe(dataframename, questoesnovas, pesosnovos):
         planilhas.loc[i, 'Questões'] = questoesnovas[i]
         planilhas.loc[i, 'Peso'] = pesosnovos[i]
 
-    os.makedirs('C:/Users/USER/Desktop/Visao_provas/bancodedados', exist_ok=True)
-    planilhas.to_excel(f'C:/Users/USER/Desktop/Visao_provas/bancodedados{dataframename}')
+    os.makedirs('C:/Users/usuario/Desktop/visãoprovas/bancodedados', exist_ok=True)
+    planilhas.to_excel(f'C:/Users/usuario/Desktop/visãoprovas/bancodedados{dataframename}')
     
 
 

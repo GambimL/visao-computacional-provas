@@ -20,10 +20,6 @@ def main():
     frame_botoes = Frame(window, width=300, height=200, bg='WHITE')
     frame_botoes.pack()
 
-
-
-
-    
     gabarito = Button(frame_botoes, text = 'Criar Gabarito', 
                       width = 20 ,
                       command = criar_gabarito, 

@@ -1,4 +1,5 @@
 from imutils.perspective import four_point_transform
+import pytesseract
 from imutils import contours
 import imutils
 import cv2
@@ -8,9 +9,12 @@ import numpy as np
         
     
 
-def pre_processa_imagem(imagem, resposta):
+def pre_processa_imagem(imagem, resposta, peso):
+    posicao_corretas = []
+    pesos = peso
     ANSWER_KEY = resposta
-    print(ANSWER_KEY)
+    corretas = []
+    pesos_corretas = []
     image = imagem
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
     blurred = cv2.GaussianBlur(gray, (5, 5), 0)
@@ -37,6 +41,11 @@ def pre_processa_imagem(imagem, resposta):
     warped = four_point_transform(gray, docCnt.reshape(4, 2))
     warped = cv2.resize(warped, dsize=(650, 700))
     paper = cv2.resize(paper, dsize=(650, 700))
+    aluno = warped[0:70, 0:650]
+
+    pytesseract.pytesseract.tesseract_cmd = r"C:/Program Files/Tesseract-OCR/tesseract.exe"
+    texto_aluno = pytesseract.image_to_string(aluno)
+
     warped = warped[20:680, 10:627]
     paper = paper[20:680, 10:630]
     thresh = cv2.threshold(warped, 0, 255, cv2.THRESH_BINARY_INV | cv2.THRESH_OTSU)[1]
@@ -55,8 +64,8 @@ def pre_processa_imagem(imagem, resposta):
            
             
     
-    # cv2.imshow('foto gabarito', paper)
-    cv2.waitKey(0)           
+    
+              
     questionCnts = contours.sort_contours(questionsCnts, method = "top-to-bottom")[0]
     correct = 0
 
@@ -64,7 +73,6 @@ def pre_processa_imagem(imagem, resposta):
     for (q, i) in enumerate(np.arange(0, len(questionCnts), 5)):
         cnts = contours.sort_contours(questionCnts[i:i + 5])[0]
         bubbled = None
-        print(i)
 
 
         for (j, c) in enumerate(cnts):
@@ -79,15 +87,19 @@ def pre_processa_imagem(imagem, resposta):
 
         cor = (0, 0, 255)
         k = ANSWER_KEY[q]
-        print(len(cnts))
-        print(k)
+        p = pesos[q]
 
         if k == bubbled[1]:
             cor = (0, 255, 0)
-            correct += 1
+            corretas.append(k)
+            pesos_corretas.append(p)
+            posicao_corretas.append(q)
+
+
+            
 
         cv2.drawContours(paper , [cnts[k]], -1, cor, 2)
-    cv2.imshow('foto gabarito', paper)
+    return paper, corretas, pesos_corretas, posicao_corretas, texto_aluno
 
 
 

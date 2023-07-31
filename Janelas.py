@@ -1,4 +1,6 @@
+from funcoes_auxiliares import *
 from imagem import pre_processa_imagem
+from resposta import calcula_total
 import cv2
 from tkinter import *
 from tkinter import ttk
@@ -8,6 +10,7 @@ from imutils.perspective import four_point_transform
 from imutils import contours
 import imutils
 import numpy as np
+import pytesseract
 
 
 
@@ -20,46 +23,31 @@ def criar_gabarito():
 
         area = str(caixa_materias.get())
         nome_gabarito = str(imput.get())
-        questoes_marcadas.append(caixa_questao1.get())
-        peso_questoes.append(peso1.get())
-        questoes_marcadas.append(caixa_questao2.get())
-        peso_questoes.append(peso2.get())
-        questoes_marcadas.append(caixa_questao3.get())
-        peso_questoes.append(peso3.get())
-        questoes_marcadas.append(caixa_questao4.get())
-        peso_questoes.append(peso4.get())
-        questoes_marcadas.append(caixa_questao5.get())
-        peso_questoes.append(peso5.get())
-        questoes_marcadas.append(caixa_questao6.get())
-        peso_questoes.append(peso6.get())
-        questoes_marcadas.append(caixa_questao7.get())
-        peso_questoes.append(peso7.get())
-        questoes_marcadas.append(caixa_questao8.get())
-        peso_questoes.append(peso8.get())
-        questoes_marcadas.append(caixa_questao9.get())
-        peso_questoes.append(peso9.get())
-        questoes_marcadas.append(caixa_questao10.get())
-        peso_questoes.append(peso10.get())
-        questoes_marcadas.append(caixa_questao11.get())
-        peso_questoes.append(peso11.get())
-        questoes_marcadas.append(caixa_questao12.get())
-        peso_questoes.append(peso12.get())
-        questoes_marcadas.append(caixa_questao13.get())
-        peso_questoes.append(peso13.get())
-        questoes_marcadas.append(caixa_questao14.get())
-        peso_questoes.append(peso14.get())
-        questoes_marcadas.append(caixa_questao15.get())
-        peso_questoes.append(peso15.get())
-        questoes_marcadas.append(caixa_questao16.get())
-        peso_questoes.append(peso16.get())
-        questoes_marcadas.append(caixa_questao17.get())
-        peso_questoes.append(peso17.get())
-        questoes_marcadas.append(caixa_questao18.get())
-        peso_questoes.append(peso18.get())
-        questoes_marcadas.append(caixa_questao19.get())
-        peso_questoes.append(peso19.get())
-        questoes_marcadas.append(caixa_questao20.get())
-        peso_questoes.append(peso20.get())
+
+        for caixa in caixa_questoes_frame1:
+            questoes_marcadas.append(caixa.get())
+
+        for caixa in caixa_questoes_frame2:
+            questoes_marcadas.append(caixa.get())
+        
+        for caixa in caixa_questoes_frame4:
+            questoes_marcadas.append(caixa.get())
+        
+        for caixa in caixa_questoes_frame4:
+            questoes_marcadas.append(caixa.get())
+
+        for peso in pesos_frame1:
+            peso_questoes.append(peso.get())
+
+        for peso in pesos_frame2:
+            peso_questoes.append(peso.get())
+
+        for peso in pesos_frame3:
+            peso_questoes.append(peso.get())
+
+        for peso in pesos_frame4:
+            peso_questoes.append(peso.get())
+
 
         print(questoes_marcadas)
 
@@ -156,258 +144,58 @@ def criar_gabarito():
     alternativas = ['A', 'B', 'C', 'D', 'E']
 
 
+    def criar_frame_questao(parent, questao, iterador):
+        frame_questao = Frame(parent, bg='WHITE')
+        frame_questao.pack(side = 'left', padx = 30)
+        label_questao = Label(frame_questao, text=f'Questão {questao + iterador}', bg='WHITE')
+        label_questao.pack(side = 'top')
+        caixa_questao = ttk.Combobox(frame_questao, value=alternativas)
+        caixa_questao.pack(side = 'left'),
+        peso = Entry(frame_questao, width=5)
+        peso.insert(0, 'Peso'),
+        peso.pack()
 
+        return label_questao, caixa_questao, peso
+
+    caixa_questoes_frame1 = []
+    pesos_frame1 = []
     frame_top = Frame(window, bg='WHITE')
     frame_top.pack(side = 'top')
-    frame_questao1 = Frame(frame_top, bg='WHITE')
-    frame_questao1.pack(side = 'left', padx = 30)
-    label_questao1 = Label(frame_questao1, text='Questão 1', bg='WHITE')
-    label_questao1.pack(side = 'top')
-    caixa_questao1 = ttk.Combobox(frame_questao1, value=alternativas)
-    caixa_questao1.pack(side = 'left')
-    peso1 = Entry(frame_questao1, width=5)
-    peso1.insert(0, 'Peso')
-    peso1.pack()
+    for questao in range(1, 6):
+        label_questao, caixa_questao, peso = criar_frame_questao(frame_top, questao, 0)
+        caixa_questoes_frame1.append(caixa_questao)
+        pesos_frame1.append(peso)
 
-
-
-
-    frame_questao2 = Frame(frame_top, bg='WHITE')
-    frame_questao2.pack(side = 'left', padx = 30)
-    label_questao2 = Label(frame_questao2, text='Questão 2', bg='WHITE')
-    label_questao2.pack(side = 'top')
-    caixa_questao2 = ttk.Combobox(frame_questao2, value=alternativas)
-    caixa_questao2.pack(side = 'left')
-    peso2 = Entry(frame_questao2, width=5)
-    peso2.insert(0, 'Peso')
-    peso2.pack()
-
-
-
-    frame_questao3 = Frame(frame_top, bg='WHITE')
-    frame_questao3.pack(side = 'left', padx = 30)
-    label_questao3 = Label(frame_questao3, text='Questão 3', bg='WHITE')
-    label_questao3.pack(side = 'top')
-    caixa_questao3 = ttk.Combobox(frame_questao3, value=alternativas)
-    caixa_questao3.pack(side = 'left')
-    peso3 = Entry(frame_questao3, width=5)
-    peso3.insert(0, 'Peso')
-    peso3.pack()
-
-
-
-    frame_questao4 = Frame(frame_top, bg='WHITE')
-    frame_questao4.pack(side = 'left', padx = 30)
-    label_questao4 = Label(frame_questao4, text='Questão 4', bg='WHITE')
-    label_questao4.pack(side = 'top')
-    caixa_questao4 = ttk.Combobox(frame_questao4, value=alternativas)
-    caixa_questao4.pack(side = 'left')
-    peso4 = Entry(frame_questao4, width=5)
-    peso4.insert(0, 'Peso')
-    peso4.pack()
-
-    
-
-    frame_questao5 = Frame(frame_top, bg='WHITE')
-    frame_questao5.pack(side = 'left', padx = 30)
-    label_questao5 = Label(frame_questao5, text='Questão 5', bg='WHITE')
-    label_questao5.pack(side = 'top')
-    caixa_questao5 = ttk.Combobox(frame_questao5, value=alternativas)
-    caixa_questao5.pack(side = 'left')
-    peso5 = Entry(frame_questao5, width=5)
-    peso5.insert(0, 'Peso')
-    peso5.pack()
-    
-
-
+    caixa_questoes_frame2 = []
+    pesos_frame2 = []
     frame_top2 = Frame(window, bg='WHITE')
-    frame_top2.pack(side= 'top')
-
-    frame_questao6 = Frame(frame_top2, bg='WHITE')
-    frame_questao6.pack(side = 'left', padx = 30,)
-    label_questao6 = Label(frame_questao6, text='Questão 6', bg='WHITE')
-    label_questao6.pack(side = 'top')
-    caixa_questao6 = ttk.Combobox(frame_questao6, value=alternativas)
-    caixa_questao6.pack(side = 'left')
-    peso6 = Entry(frame_questao6, width=5)
-    peso6.insert(0, 'Peso')
-    peso6.pack()
-   
+    frame_top2.pack(side = 'top')
+    for questao in range(1, 6):
+        label_questao, caixa_questao, peso = criar_frame_questao(frame_top2, questao, 5)
+        caixa_questoes_frame2.append(caixa_questao)
+        pesos_frame2.append(peso)
 
 
-    frame_questao7 = Frame(frame_top2, bg='WHITE')
-    frame_questao7.pack(side = 'left', padx = 30)
-    label_questao7 = Label(frame_questao7, text='Questão 7', bg='WHITE')
-    label_questao7.pack(side = 'top')
-    caixa_questao7 = ttk.Combobox(frame_questao7, value=alternativas)
-    caixa_questao7.pack(side = 'left')
-    peso7 = Entry(frame_questao7, width=5)
-    peso7.insert(0, 'Peso')
-    peso7.pack()
-   
-    
-
-
-
-    frame_questao8 = Frame(frame_top2, bg='WHITE')
-    frame_questao8.pack(side = 'left', padx = 30)
-    label_questao8 = Label(frame_questao8, text='Questão 8', bg='WHITE')
-    label_questao8.pack(side = 'top')
-    caixa_questao8 = ttk.Combobox(frame_questao8, value=alternativas)
-    caixa_questao8.pack(side = 'left')
-    peso8 = Entry(frame_questao8, width=5)
-    peso8.insert(0, 'Peso')
-    peso8.pack()
-
-
-
-    frame_questao9 = Frame(frame_top2, bg='WHITE')
-    frame_questao9.pack(side = 'left', padx = 30)
-    label_questao9 = Label(frame_questao9, text='Questão 9', bg='WHITE')
-    label_questao9.pack(side = 'top')
-    caixa_questao9 = ttk.Combobox(frame_questao9, value=alternativas)
-    caixa_questao9.pack(side = 'left')
-    peso9 = Entry(frame_questao9, width=5)
-    peso9.insert(0, 'Peso')
-    peso9.pack()
- 
-
-
-    frame_questao10 = Frame(frame_top2, bg='WHITE')
-    frame_questao10.pack(side = 'left', padx = 30)
-    label_questao10 = Label(frame_questao10, text='Questão 10', bg='WHITE')
-    label_questao10.pack(side = 'top')
-    caixa_questao10 = ttk.Combobox(frame_questao10, value=alternativas)
-    caixa_questao10.pack(side = 'left')
-    peso10 = Entry(frame_questao10, width=5)
-    peso10.insert(0, 'Peso')
-    peso10.pack()
-   
-
+    caixa_questoes_frame3 = []
+    pesos_frame3 = []
     frame_top3 = Frame(window, bg='WHITE')
     frame_top3.pack(side = 'top')
+    for questao in range(1, 6):
+        label_questao, caixa_questao, peso = criar_frame_questao(frame_top3, questao, 10)
+        caixa_questoes_frame3.append(caixa_questao)
+        pesos_frame3.append(peso)
 
-    frame_top3.pack(side= 'top')
-    frame_questao11 = Frame(frame_top3, bg='WHITE')
-    frame_questao11.pack(side = 'left', padx = 30)
-    label_questao11 = Label(frame_questao11, text='Questão 1', anchor = W, bg='WHITE')
-    label_questao11.pack(side = 'top')
-    caixa_questao11 = ttk.Combobox(frame_questao11, value=alternativas)
-    caixa_questao11.pack(side = 'left')
-    peso11 = Entry(frame_questao11, width=5)
-    peso11.insert(0, 'Peso')
-    peso11.pack()
- 
-
-    frame_questao12 = Frame(frame_top3, bg='WHITE')
-    frame_questao12.pack(side = 'left', padx = 30)
-    label_questao12 = Label(frame_questao12, text='Questão 12', bg='WHITE')
-    label_questao12.pack(side = 'top')
-    caixa_questao12 = ttk.Combobox(frame_questao12, value=alternativas)
-    caixa_questao12.pack(side = 'left')
-    peso12 = Entry(frame_questao12, width=5)
-    peso12.insert(0, 'Peso')
-    peso12.pack()
- 
-
-
-    frame_questao13 = Frame(frame_top3, bg='WHITE')
-    frame_questao13.pack(side = 'left', padx = 30)
-    label_questao13 = Label(frame_questao13, text='Questão 13', bg='WHITE')
-    label_questao13.pack(side = 'top')
-    caixa_questao13 = ttk.Combobox(frame_questao13, value=alternativas)
-    caixa_questao13.pack(side = 'left')
-    peso13 = Entry(frame_questao13, width=5)
-    peso13.insert(0, 'Peso')
-    peso13.pack()
-
-
-
-    frame_questao14 = Frame(frame_top3, bg='WHITE')
-    frame_questao14.pack(side = 'left', padx = 30)
-    label_questao14 = Label(frame_questao14, text='Questão 14', bg='WHITE')
-    label_questao14.pack(side = 'top')
-    caixa_questao14 = ttk.Combobox(frame_questao14, value=alternativas)
-    caixa_questao14.pack(side = 'left')
-    peso14 = Entry(frame_questao14, width=5)
-    peso14.insert(0, 'Peso')
-    peso14.pack()
-
-
-    frame_questao15 = Frame(frame_top3, bg='WHITE')
-    frame_questao15.pack(side = 'left', padx = 30)
-    label_questao15 = Label(frame_questao15, text='Questão 15', bg='WHITE')
-    label_questao15.pack(side = 'top')
-    caixa_questao15 = ttk.Combobox(frame_questao15, value=alternativas)
-    caixa_questao15.pack(side = 'left')
-    peso15 = Entry(frame_questao15, width=5)
-    peso15.insert(0, 'Peso')
-    peso15.pack()
-
-
-
+    caixa_questoes_frame4 = []
+    pesos_frame4 = []
     frame_top4 = Frame(window, bg='WHITE')
-    frame_top4.pack(side= 'top')
+    frame_top4.pack(side = 'top')
+    for questao in range(1, 6):
+        label_questao, caixa_questao, peso = criar_frame_questao(frame_top4, questao, 15)
+        caixa_questoes_frame4.append(caixa_questao)
+        pesos_frame4.append(peso)
 
-    frame_questao16 = Frame(frame_top4, bg='WHITE')
-    frame_questao16.pack(side = 'left', padx = 30)
-    label_questao16 = Label(frame_questao16, text='Questão 16', anchor = W, bg='WHITE')
-    label_questao16.pack(side = 'top')
-    caixa_questao16 = ttk.Combobox(frame_questao16, value=alternativas)
-    caixa_questao16.pack(side = 'left')
-    peso16 = Entry(frame_questao16, width=5)
-    peso16.insert(0, 'Peso')
-    peso16.pack()
-   
-
-
-    frame_questao17 = Frame(frame_top4, bg='WHITE')
-    frame_questao17.pack(side = 'left', padx = 30)
-    label_questao17 = Label(frame_questao17, text='Questão 17', bg='WHITE')
-    label_questao17.pack(side = 'top')
-    caixa_questao17 = ttk.Combobox(frame_questao17, value=alternativas)
-    caixa_questao17.pack(side = 'left')
-    peso17 = Entry(frame_questao17, width=5)
-    peso17.insert(0, 'Peso')
-    peso17.pack()
-  
-
-
-    frame_questao18 = Frame(frame_top4, bg='WHITE')
-    frame_questao18.pack(side = 'left', padx = 30)
-    label_questao18 = Label(frame_questao18, text='Questão 18', bg='WHITE')
-    label_questao18.pack(side = 'top')
-    caixa_questao18 = ttk.Combobox(frame_questao18, value=alternativas)
-    caixa_questao18.pack(side = 'left')
-    peso18 = Entry(frame_questao18, width=5)
-    peso18.insert(0, 'Peso')
-    peso18.pack()
-    
-
-
-    frame_questao19 = Frame(frame_top4, bg='WHITE')
-    frame_questao19.pack(side = 'left', padx = 30)
-    label_questao19 = Label(frame_questao19, text='Questão 19', bg='WHITE')
-    label_questao19.pack(side = 'top')
-    caixa_questao19 = ttk.Combobox(frame_questao19, value=alternativas)
-    caixa_questao19.pack(side = 'left')
-    peso19 = Entry(frame_questao19, width=5)
-    peso19.insert(0, 'Peso')
-    peso19.pack()
-    
-
-    frame_questao20 = Frame(frame_top4, bg='WHITE')
-    frame_questao20.pack(side = 'left', padx = 30)
-    label_questao20 = Label(frame_questao20, text='Questão 20')
-    label_questao20.pack(side = 'top')
-    caixa_questao20 = ttk.Combobox(frame_questao20, value=alternativas)
-    caixa_questao20.pack(side = 'left')
-    peso20 = Entry(frame_questao20, width=5)
-    peso20.insert(0, 'Peso')
-    peso20.pack()
-
-    # frame_botoes = Frame(window)
-    # frame_botoes.Pack()
+    frame_botoes = Frame(window)
+    frame_botoes.Pack()
 
     salvar = Button(window, text='Salvar', command=executar_comando, width=20)
     salvar.pack(side = 'left', padx=10)
@@ -446,71 +234,74 @@ def criar_gabarito():
 
 def corrigir_provas():
     webcam = cv2.VideoCapture(0)
-    def obter_gabaritos():
-        nome_gabarito = str(caixa_gabaritos.get())
-        questoes, pesos = obter_dataframe(f'bancodedados/{nome_gabarito}.xlsx')
-        alternativas = []
-
-
-        
-        for questao in questoes:
-                questao = questao.replace(' ', '')
-                if questao == 'A':
-                    alternativas.append(0)
-                elif questao == 'B':
-                    alternativas.append(1)
-                elif questao == 'C':
-                    alternativas.append(2)
-                elif questao == 'D':
-                    alternativas.append(3)
-                elif questao == 'E':
-                    alternativas.append(4)
-        return alternativas, questoes
 
     def selecionar_gabarito():
-
-        alternativas, questoes = obter_gabaritos()
+        nome_gabarito = str(caixa_gabaritos.get())
+        questoes, pesos = obter_dataframe(f'bancodedados/{nome_gabarito}.xlsx')
+        alternativas = trasnforma_letra_para_numero(questoes)
         for i in range(len(alternativas)):
-            tv.insert(parent='', index=i, iid=i, text='', values=(f'Qestão{i+1}', questoes[i]))
+            tv.insert(parent='', index=i, iid=i, text='', values=(f'Qestão{i+1}', questoes[i], pesos[i]))
+           
 
     def processar_gabarito():
-
-        alternativas, questoes = obter_gabaritos()
+        nome_gabarito = str(caixa_gabaritos.get())
+        questoes, pesos = obter_dataframe(f'bancodedados/{nome_gabarito}.xlsx')
+        alternativas = trasnforma_letra_para_numero(questoes)
 
         if webcam.isOpened():
             validacao, frame = webcam.read()
-        while validacao:
-                validacao, frame = webcam.read()
-                gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-                blurred = cv2.GaussianBlur(gray, (5, 5), 0)
-                edged = cv2.Canny(blurred, 75, 200)
-                kernel = np.ones((2,2),np.uint8)
-                edged = cv2.dilate(edged,kernel,iterations = 1)
+            while validacao:
+                    validacao, frame = webcam.read()
+                    gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+                    blurred = cv2.GaussianBlur(gray, (5, 5), 0)
+                    edged = cv2.Canny(blurred, 75, 200)
+                    kernel = np.ones((2,2),np.uint8)
+                    edged = cv2.dilate(edged,kernel,iterations = 1)
 
 
-                cnts = cv2.findContours(edged.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-                cnts = imutils.grab_contours(cnts)
-                doCnt = None
+                    cnts = cv2.findContours(edged.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+                    cnts = imutils.grab_contours(cnts)
+                    doCnt = None
 
-                if len(cnts) > 0:
-                    cnts = sorted(cnts, key=cv2.contourArea, reverse=True)
-                    for c in cnts:
-                        peri = cv2.arcLength(c, True)
-                        approx = cv2.approxPolyDP(c, 0.02 * peri, True)
+                    if len(cnts) > 0:
+                        cnts = sorted(cnts, key=cv2.contourArea, reverse=True)
+                        for c in cnts:
+                            peri = cv2.arcLength(c, True)
+                            approx = cv2.approxPolyDP(c, 0.02 * peri, True)
 
-                        if len(approx == 4):
-                            doCnt = approx
-                            cv2.drawContours(frame, [doCnt],-1, (0, 0, 255), 2)
-               
-                    
+                            if len(approx == 4):
+                                doCnt = approx
+                                cv2.drawContours(frame, [doCnt],-1, (0, 0, 255), 2)
+                
+                        
 
-                cv2.imshow("Video da Webcam", frame)
-                key = cv2.waitKey(5)
-                if key == 27: # ESC
-                    break
+                    cv2.imshow("Video da Webcam", frame)
+                    key = cv2.waitKey(5)
+                    if key == 27: # ESC
+                        break
 
         webcam.release()
-        pre_processa_imagem(frame, alternativas)
+        paper, corretas, pesos_corretas, posicao_corretas, texto_aluno = pre_processa_imagem(frame, alternativas, pesos)
+        acertos = len(corretas)
+        resultado = calcula_total(acertos, pesos_corretas)
+        nota.insert(0, resultado)
+
+        texto_aluno = texto_aluno[texto_aluno.find(':')+1::]
+        nome_aluno.insert(0, texto_aluno)
+
+        
+
+        gabarito_aluno = np.zeros(20)
+        for i in range(len(posicao_corretas)):
+            gabarito_aluno[posicao_corretas[i]] = 1
+
+        for i in range(len(gabarito_aluno)):
+            if gabarito_aluno[i] == 0:
+                tv2.insert(parent='', index=i, iid=i, text='', values=(f'Qestão{i+1}', questoes[i], 'Errado'))
+            else:
+                tv2.insert(parent='', index=i, iid=i, text='', values=(f'Qestão{i+1}', questoes[i], 'Certo'))
+
+        cv2.imshow("foto corretas", paper)
     
     window = Tk()
     window.config(padx=100, pady=100)
@@ -535,13 +326,15 @@ def corrigir_provas():
 
 
     tv = ttk.Treeview(frame_tabela)
-    tv['columns'] = ('numero', 'Gabarito')
+    tv['columns'] = ('numero', 'Gabarito', 'Peso')
     tv.column('#0', width=0, stretch=NO)
     tv.column('numero', anchor=CENTER, width=80)
     tv.column('Gabarito',anchor=CENTER, width=200)
+    tv.column('Peso', anchor=CENTER, width=80)
     tv.heading('#0', text='', anchor=CENTER)
     tv.heading('numero', text='Id', anchor=CENTER)
     tv.heading('Gabarito', text='Gabarito', anchor=CENTER)
+    tv.heading('Peso',text='Peso',anchor=CENTER)
     tv.pack()
 
     frame_dados = Frame(window)
@@ -562,13 +355,15 @@ def corrigir_provas():
     nota.pack()
 
     tv2 = ttk.Treeview(frame_dados)
-    tv2['columns'] = ('numero', 'Gabarito')
+    tv2['columns'] = ('numero', 'Gabarito', 'Resposta')
     tv2.column('#0', width=0, stretch=NO)
     tv2.column('numero', anchor=CENTER, width=80)
     tv2.column('Gabarito',anchor=CENTER, width=200)
+    tv2.column('Resposta',anchor=CENTER, width=200)
     tv2.heading('#0', text='', anchor=CENTER)
     tv2.heading('numero', text='Id', anchor=CENTER)
     tv2.heading('Gabarito', text='Gabarito', anchor=CENTER)
+    tv2.heading('Resposta', text='Gabarito', anchor=CENTER)
     tv2.pack()
     
     window.mainloop()

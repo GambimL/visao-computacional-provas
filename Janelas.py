@@ -24,61 +24,45 @@ def criar_gabarito():
         area = str(caixa_materias.get())
         nome_gabarito = str(imput.get())
 
-        for caixa in caixa_questoes_frame1:
+        for caixa in caixa_questoes:
             questoes_marcadas.append(caixa.get())
 
-        for caixa in caixa_questoes_frame2:
-            questoes_marcadas.append(caixa.get())
-        
-        for caixa in caixa_questoes_frame4:
-            questoes_marcadas.append(caixa.get())
-        
-        for caixa in caixa_questoes_frame4:
-            questoes_marcadas.append(caixa.get())
-
-        for peso in pesos_frame1:
-            peso_questoes.append(peso.get())
-
-        for peso in pesos_frame2:
-            peso_questoes.append(peso.get())
-
-        for peso in pesos_frame3:
-            peso_questoes.append(peso.get())
-
-        for peso in pesos_frame4:
+        for peso in pesos:
             peso_questoes.append(peso.get())
 
 
-        print(questoes_marcadas)
 
-        
+        print(questoes_marcadas) 
         criar_dataframe(nome_gabarito, questoes_marcadas, peso_questoes, area)
 
 
     def obter_valores_da_tabela():
 
-
         imput.delete(0, END)
-        caixa_questao1.delete(0, END)
-        caixa_questao2.delete(0, END)
-        caixa_questao3.delete(0, END)
-        caixa_questao4.delete(0, END)
-        caixa_questao5.delete(0, END)
-        caixa_questao6.delete(0, END)
-        caixa_questao7.delete(0, END)
-        caixa_questao8.delete(0, END)
-        caixa_questao9.delete(0, END)
-        caixa_questao10.delete(0, END)
-        caixa_questao11.delete(0, END)
-        caixa_questao12.delete(0, END)
-        caixa_questao13.delete(0, END)
-        caixa_questao14.delete(0, END)
-        caixa_questao15.delete(0, END)
-        caixa_questao16.delete(0, END)
-        caixa_questao17.delete(0, END)
-        caixa_questao18.delete(0, END)
-        caixa_questao19.delete(0, END)
-        caixa_questao20.delete(0, END)
+
+        for caixa in caixa_questoes:
+            caixa.delete(0, END)
+
+        # caixa_questao1.delete(0, END)
+        # caixa_questao2.delete(0, END)
+        # caixa_questao3.delete(0, END)
+        # caixa_questao4.delete(0, END)
+        # caixa_questao5.delete(0, END)
+        # caixa_questao6.delete(0, END)
+        # caixa_questao7.delete(0, END)
+        # caixa_questao8.delete(0, END)
+        # caixa_questao9.delete(0, END)
+        # caixa_questao10.delete(0, END)
+        # caixa_questao11.delete(0, END)
+        # caixa_questao12.delete(0, END)
+        # caixa_questao13.delete(0, END)
+        # caixa_questao14.delete(0, END)
+        # caixa_questao15.delete(0, END)
+        # caixa_questao16.delete(0, END)
+        # caixa_questao17.delete(0, END)
+        # caixa_questao18.delete(0, END)
+        # caixa_questao19.delete(0, END)
+        # caixa_questao20.delete(0, END)
 
   
 
@@ -95,26 +79,29 @@ def criar_gabarito():
         materia = values[1][limite_inferior+1:limite_superior]
         caixa_materias.insert(0, materia)
 
-        caixa_questao1.insert(0,f' {questoes[0]}')
-        caixa_questao2.insert(0,f' {questoes[1]}')
-        caixa_questao3.insert(0,f' {questoes[2]}')
-        caixa_questao4.insert(0,f' {questoes[3]}')
-        caixa_questao5.insert(0,f' {questoes[4]}')
-        caixa_questao6.insert(0,f' {questoes[5]}')
-        caixa_questao7.insert(0,f' {questoes[6]}')
-        caixa_questao8.insert(0,f' {questoes[7]}')
-        caixa_questao9.insert(0,f' {questoes[8]}')
-        caixa_questao10.insert(0,f' {questoes[9]}')
-        caixa_questao11.insert(0,f' {questoes[10]}')
-        caixa_questao12.insert(0,f' {questoes[11]}')
-        caixa_questao13.insert(0,f' {questoes[12]}')
-        caixa_questao14.insert(0,f' {questoes[13]}')
-        caixa_questao15.insert(0,f' {questoes[14]}')
-        caixa_questao16.insert(0,f' {questoes[15]}')
-        caixa_questao17.insert(0,f' {questoes[16]}')
-        caixa_questao18.insert(0,f' {questoes[17]}')
-        caixa_questao19.insert(0,f' {questoes[18]}')
-        caixa_questao20.insert(0,f' {questoes[19]}')
+
+        for i in range(len(caixa_questoes)):
+            caixa_questoes[i].insert(0,f'{questoes[i]}')
+        # caixa_questao1.insert(0,f' {questoes[0]}')
+        # caixa_questao2.insert(0,f' {questoes[1]}')
+        # caixa_questao3.insert(0,f' {questoes[2]}')
+        # caixa_questao4.insert(0,f' {questoes[3]}')
+        # caixa_questao5.insert(0,f' {questoes[4]}')
+        # caixa_questao6.insert(0,f' {questoes[5]}')
+        # caixa_questao7.insert(0,f' {questoes[6]}')
+        # caixa_questao8.insert(0,f' {questoes[7]}')
+        # caixa_questao9.insert(0,f' {questoes[8]}')
+        # caixa_questao10.insert(0,f' {questoes[9]}')
+        # caixa_questao11.insert(0,f' {questoes[10]}')
+        # caixa_questao12.insert(0,f' {questoes[11]}')
+        # caixa_questao13.insert(0,f' {questoes[12]}')
+        # caixa_questao14.insert(0,f' {questoes[13]}')
+        # caixa_questao15.insert(0,f' {questoes[14]}')
+        # caixa_questao16.insert(0,f' {questoes[15]}')
+        # caixa_questao17.insert(0,f' {questoes[16]}')
+        # caixa_questao18.insert(0,f' {questoes[17]}')
+        # caixa_questao19.insert(0,f' {questoes[18]}')
+        # caixa_questao20.insert(0,f' {questoes[19]}')
 
     window = Tk()
     window.config(padx=50, pady=50, bg='WHITE')
@@ -157,45 +144,42 @@ def criar_gabarito():
 
         return label_questao, caixa_questao, peso
 
-    caixa_questoes_frame1 = []
-    pesos_frame1 = []
+    caixa_questoes = []
+    pesos = []
     frame_top = Frame(window, bg='WHITE')
     frame_top.pack(side = 'top')
     for questao in range(1, 6):
         label_questao, caixa_questao, peso = criar_frame_questao(frame_top, questao, 0)
-        caixa_questoes_frame1.append(caixa_questao)
-        pesos_frame1.append(peso)
+        caixa_questoes.append(caixa_questao)
+        pesos.append(peso)
 
-    caixa_questoes_frame2 = []
-    pesos_frame2 = []
+  
     frame_top2 = Frame(window, bg='WHITE')
     frame_top2.pack(side = 'top')
     for questao in range(1, 6):
         label_questao, caixa_questao, peso = criar_frame_questao(frame_top2, questao, 5)
-        caixa_questoes_frame2.append(caixa_questao)
-        pesos_frame2.append(peso)
+        caixa_questoes.append(caixa_questao)
+        pesos.append(peso)
 
 
-    caixa_questoes_frame3 = []
-    pesos_frame3 = []
+ 
     frame_top3 = Frame(window, bg='WHITE')
     frame_top3.pack(side = 'top')
     for questao in range(1, 6):
         label_questao, caixa_questao, peso = criar_frame_questao(frame_top3, questao, 10)
-        caixa_questoes_frame3.append(caixa_questao)
-        pesos_frame3.append(peso)
+        caixa_questoes.append(caixa_questao)
+        pesos.append(peso)
 
-    caixa_questoes_frame4 = []
-    pesos_frame4 = []
+
     frame_top4 = Frame(window, bg='WHITE')
     frame_top4.pack(side = 'top')
     for questao in range(1, 6):
         label_questao, caixa_questao, peso = criar_frame_questao(frame_top4, questao, 15)
-        caixa_questoes_frame4.append(caixa_questao)
-        pesos_frame4.append(peso)
+        caixa_questoes.append(caixa_questao)
+        pesos.append(peso)
 
-    frame_botoes = Frame(window)
-    frame_botoes.Pack()
+    # frame_botoes = Frame(window)
+    # frame_botoes.Pack()
 
     salvar = Button(window, text='Salvar', command=executar_comando, width=20)
     salvar.pack(side = 'left', padx=10)

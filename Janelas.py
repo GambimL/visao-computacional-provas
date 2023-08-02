@@ -43,28 +43,6 @@ def criar_gabarito():
         for caixa in caixa_questoes:
             caixa.delete(0, END)
 
-        # caixa_questao1.delete(0, END)
-        # caixa_questao2.delete(0, END)
-        # caixa_questao3.delete(0, END)
-        # caixa_questao4.delete(0, END)
-        # caixa_questao5.delete(0, END)
-        # caixa_questao6.delete(0, END)
-        # caixa_questao7.delete(0, END)
-        # caixa_questao8.delete(0, END)
-        # caixa_questao9.delete(0, END)
-        # caixa_questao10.delete(0, END)
-        # caixa_questao11.delete(0, END)
-        # caixa_questao12.delete(0, END)
-        # caixa_questao13.delete(0, END)
-        # caixa_questao14.delete(0, END)
-        # caixa_questao15.delete(0, END)
-        # caixa_questao16.delete(0, END)
-        # caixa_questao17.delete(0, END)
-        # caixa_questao18.delete(0, END)
-        # caixa_questao19.delete(0, END)
-        # caixa_questao20.delete(0, END)
-
-  
 
         data_frame = tv.selection()[0]
         values = tv.item(data_frame, 'values')
@@ -82,26 +60,7 @@ def criar_gabarito():
 
         for i in range(len(caixa_questoes)):
             caixa_questoes[i].insert(0,f'{questoes[i]}')
-        # caixa_questao1.insert(0,f' {questoes[0]}')
-        # caixa_questao2.insert(0,f' {questoes[1]}')
-        # caixa_questao3.insert(0,f' {questoes[2]}')
-        # caixa_questao4.insert(0,f' {questoes[3]}')
-        # caixa_questao5.insert(0,f' {questoes[4]}')
-        # caixa_questao6.insert(0,f' {questoes[5]}')
-        # caixa_questao7.insert(0,f' {questoes[6]}')
-        # caixa_questao8.insert(0,f' {questoes[7]}')
-        # caixa_questao9.insert(0,f' {questoes[8]}')
-        # caixa_questao10.insert(0,f' {questoes[9]}')
-        # caixa_questao11.insert(0,f' {questoes[10]}')
-        # caixa_questao12.insert(0,f' {questoes[11]}')
-        # caixa_questao13.insert(0,f' {questoes[12]}')
-        # caixa_questao14.insert(0,f' {questoes[13]}')
-        # caixa_questao15.insert(0,f' {questoes[14]}')
-        # caixa_questao16.insert(0,f' {questoes[15]}')
-        # caixa_questao17.insert(0,f' {questoes[16]}')
-        # caixa_questao18.insert(0,f' {questoes[17]}')
-        # caixa_questao19.insert(0,f' {questoes[18]}')
-        # caixa_questao20.insert(0,f' {questoes[19]}')
+       
 
     window = Tk()
     window.config(padx=50, pady=50, bg='WHITE')
@@ -225,6 +184,7 @@ def corrigir_provas():
         alternativas = trasnforma_letra_para_numero(questoes)
         for i in range(len(alternativas)):
             tv.insert(parent='', index=i, iid=i, text='', values=(f'Qestão{i+1}', questoes[i], pesos[i]))
+            
            
 
     def processar_gabarito():

@@ -20,6 +20,10 @@ def obter_dataframe(dataframename):
     for i in range(20):
         questoes.append(planilhas.loc[i, 'Questões'])
         pesos.append(planilhas.loc[i, 'Peso'])
+
+    
+        
+
     
     return questoes, pesos
 

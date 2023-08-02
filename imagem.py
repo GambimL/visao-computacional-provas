@@ -4,6 +4,7 @@ from imutils import contours
 import imutils
 import cv2
 import numpy as np
+from funcoes_auxiliares import *
 
 
         
@@ -12,7 +13,9 @@ import numpy as np
 def pre_processa_imagem(imagem, resposta, peso):
     posicao_corretas = []
     pesos = peso
-    ANSWER_KEY = resposta
+    ANSWER_KEY = concerta_array(resposta)
+    
+
     corretas = []
     pesos_corretas = []
     image = imagem

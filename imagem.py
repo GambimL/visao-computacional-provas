@@ -89,7 +89,8 @@ def pre_processa_imagem(imagem, resposta, peso):
                 bubbled = (total, j)
 
         cor = (0, 0, 255)
-        k = ANSWER_KEY[q]
+        k = int(ANSWER_KEY[q])
+        print(k)
         p = pesos[q]
 
         if k == bubbled[1]:
@@ -102,6 +103,7 @@ def pre_processa_imagem(imagem, resposta, peso):
             
 
         cv2.drawContours(paper , [cnts[k]], -1, cor, 2)
+    
     return paper, corretas, pesos_corretas, posicao_corretas, texto_aluno
 
 

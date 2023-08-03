@@ -37,15 +37,12 @@ def concerta_array(array):
     array_corrigido = np.zeros(20)
     
 
-    array_metade_1 = array[:len(array)//2]
-    array_metade_2 = array[len(array)//2:]
-    print(len(array_metade_1))
-    arrays = [(array_metade_1), (array_metade_2)]
+   
     for q in range(1, 2):
-        for i in range(0, 4):
-            if i % 2 == 0:
-                array_corrigido[(q*i)+10] = arrays[q][i]
-            else:
-                array_corrigido[q*i] = arrays[q][i]
+        for i in range(10):
+            array_corrigido[2*i+1] = array[i]
+        
+        for i in range(10):
+            array_corrigido[2*i] = array[i+10]
     print(array_corrigido)
     return array_corrigido

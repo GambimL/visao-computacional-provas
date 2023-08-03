@@ -22,6 +22,9 @@ def criar_gabarito():
 
 
         area = str(caixa_materias.get())
+        turma = str(caixa_turmas.get())
+        semestre = str(caixa_semestre.get())
+        tipo = str(caixa_tipo.get())
         nome_gabarito = str(imput.get())
 
         for caixa in caixa_questoes:
@@ -33,7 +36,9 @@ def criar_gabarito():
 
 
         print(questoes_marcadas) 
-        criar_dataframe(nome_gabarito, questoes_marcadas, peso_questoes, area)
+        criar_dataframe(nome_gabarito, questoes_marcadas,
+                         peso_questoes, area,
+                         turma, semestre, tipo)
 
 
     def obter_valores_da_tabela():
@@ -67,22 +72,55 @@ def criar_gabarito():
     pesos = []
     questoes = []
     caixa_questoes = []
-    materias= ['Mátematica', 'Ciências Humanas', 'Ciências da Natureza', 'Linguagens']
+    materias = ['Mátematica', 'Ciências Humanas', 'Ciências da Natureza', 'Linguagens']
+    turmas = ['1° Ano', '2° Ano', '3° Ano']
+    semestre = ['Primeiro', 'Segundo']
+    tipo = ['semestral', 'Recuperação']
     questoes_marcadas = []
     peso_questoes = []
 
     
-
+    frame_areas_turmas = Frame(window, bg='WHITE')
+    frame_areas_turmas.pack(side='left')
 
     nome_do_gabarito = Label(window, text='Nome do Gabarito', anchor=W, bg='WHITE')
     nome_do_gabarito.pack()
     imput = Entry(window, width = 45)
     imput.pack()
 
-    label_materias = Label(window, text='Areas', bg='WHITE')
-    label_materias.pack()
-    caixa_materias = ttk.Combobox(window, value=materias)
+    frame_infos = Frame(window, bg="WHITE")
+    frame_infos.pack()
+
+    frame_areas_turmas = Frame(frame_infos, bg='WHITE')
+    frame_areas_turmas.pack(side='left')
+
+
+    label_materias = Label(frame_areas_turmas, text='Areas', bg='WHITE')
+    label_materias.pack(side = 'top')
+    caixa_materias = ttk.Combobox(frame_areas_turmas, value=materias)
     caixa_materias.pack()
+
+    label_turmas = Label(frame_areas_turmas, text='Turmas', bg='WHITE')
+    label_turmas.pack(side = 'top')
+    caixa_turmas = ttk.Combobox(frame_areas_turmas, value=turmas)
+    caixa_turmas.pack()
+
+    frame_semestre_tipo = Frame(frame_infos, bg='WHITE')
+    frame_semestre_tipo.pack(side='left')
+
+    label_semestre = Label(frame_semestre_tipo, text='semestre', bg='WHITE')
+    label_semestre.pack(side = 'top')
+    caixa_semestre = ttk.Combobox(frame_semestre_tipo, value=semestre)
+    caixa_semestre.pack()
+
+    label_tipo = Label(frame_semestre_tipo, text='Tipo', bg='WHITE')
+    label_tipo.pack(side = 'top')
+    caixa_tipo = ttk.Combobox(frame_semestre_tipo, value=tipo)
+    caixa_tipo.pack()
+
+
+
+
 
     
     #frame_top = Frame(window)
@@ -162,7 +200,7 @@ def criar_gabarito():
     tv['columns'] = ('numero', 'Gabarito')
     tv.column('#0', width=0, stretch=NO)
     tv.column('numero', anchor=CENTER, width=80)
-    tv.column('Gabarito',anchor=CENTER, width=400)
+    tv.column('Gabarito',anchor=CENTER, width=800)
     tv.heading('#0', text='', anchor=CENTER)
     tv.heading('numero', text='Id', anchor=CENTER)
     tv.heading('Gabarito', text='Gabarito', anchor=N)

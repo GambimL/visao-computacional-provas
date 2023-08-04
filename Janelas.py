@@ -74,8 +74,9 @@ def criar_gabarito():
     caixa_questoes = []
     materias = ['Mátematica', 'Ciências Humanas', 'Ciências da Natureza', 'Linguagens']
     turmas = ['1° Ano', '2° Ano', '3° Ano']
-    semestre = ['Primeiro', 'Segundo']
+    semestre = ['Semestre 1', 'Semestre 1']
     tipo = ['semestral', 'Recuperação']
+    alternativas = ['A', 'B', 'C', 'D', 'E']
     questoes_marcadas = []
     peso_questoes = []
 
@@ -119,12 +120,6 @@ def criar_gabarito():
     caixa_tipo.pack()
 
 
-
-
-
-    
-    #frame_top = Frame(window)
-    #frame_top.pack(side= 'top')
     alternativas = ['A', 'B', 'C', 'D', 'E']
 
 
@@ -175,9 +170,6 @@ def criar_gabarito():
         caixa_questoes.append(caixa_questao)
         pesos.append(peso)
 
-    # frame_botoes = Frame(window)
-    # frame_botoes.Pack()
-
     salvar = Button(window, text='Salvar', command=executar_comando, width=20)
     salvar.pack(side = 'left', padx=10)
 
@@ -188,24 +180,34 @@ def criar_gabarito():
     frame_tabela = Frame(window, bg='WHITE')
     frame_tabela.pack(side = 'top', padx= 30, pady=30)
 
+
+
     gabaritos = os.listdir(path='C:/Users/usuario/Desktop/visãoprovas/bancodedados')
     gabarito_corrigido =  []
+
     for gabarito in gabaritos:
-        retirar = gabarito[gabarito.find('.')::]
-        gabarito = gabarito.replace(retirar, '')
-        gabarito_corrigido.append(gabarito)
+        print(gabarito.find('.xlsx'))
+        if  '.xlsx' in gabarito:
+            retirar = gabarito[gabarito.find('.')::]
+            gabarito = gabarito.replace(retirar, '')
+            gabarito_corrigido.append(gabarito)
     
 
     tv = ttk.Treeview(frame_tabela)
-    tv['columns'] = ('numero', 'Gabarito')
+    tv['columns'] = ('numero', 'Gabarito', 'Turma', 'Semestre')
     tv.column('#0', width=0, stretch=NO)
     tv.column('numero', anchor=CENTER, width=80)
-    tv.column('Gabarito',anchor=CENTER, width=800)
+    tv.column('Gabarito',anchor=CENTER, width=300)
+    tv.column('Turma',anchor=CENTER, width=80)
+    tv.column('Semestre',anchor=CENTER, width=80)
     tv.heading('#0', text='', anchor=CENTER)
     tv.heading('numero', text='Id', anchor=CENTER)
     tv.heading('Gabarito', text='Gabarito', anchor=N)
+    tv.heading('Turma', text='Turma', anchor=N)
+    tv.heading('Semestre', text='Semestre', anchor=N)
+
     for i in range(len(gabarito_corrigido)):
-        tv.insert(parent='', index=i, iid=i, text='', values=(i, gabarito_corrigido[i]))
+        tv.insert(parent='', index=i, iid=i, text='', values=(i, gabarito_corrigido[i], 2020, 2002))
     tv.pack()
     
 

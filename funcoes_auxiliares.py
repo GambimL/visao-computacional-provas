@@ -44,10 +44,16 @@ def concerta_array(array):
     print(array_corrigido)
     return array_corrigido
 
-def lista_arquivos_subdiretorios(diretorio, subdirtorio1, subdiretorio2):
+def lista_arquivos_subdiretorios():
     arquivos = []
     subdiretorios = os.listdir('C:/Users/usuario/Desktop/visãoprovas/bancodedados')
     for subdiretorio in subdiretorios:
-        subsubdiretorios = os.listdir(f'C:/Users/usuario/Desktop/visãoprovas/bancodedados/{subdiretorio}')
+        subsubdiretorios1 = os.listdir(f'C:/Users/usuario/Desktop/visãoprovas/bancodedados/{subdiretorio}')
+        for subsubdiretorio1 in subsubdiretorios1: 
+            arquivos.append(os.listdir(f'C:/Users/usuario/Desktop/visãoprovas/bancodedados/{subdiretorio}/{subsubdiretorio1}'))
+    
+    return arquivos
+
+
          
     

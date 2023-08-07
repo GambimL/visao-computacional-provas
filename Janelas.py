@@ -44,6 +44,10 @@ def criar_gabarito():
     def obter_valores_da_tabela():
 
         imput.delete(0, END)
+        caixa_materias.delete(0, END)
+        caixa_semestre.delete(0, END)
+        caixa_turmas.delete(0, END)
+        caixa_tipo.delete(0, END)
 
         for caixa in caixa_questoes:
             caixa.delete(0, END)
@@ -51,16 +55,27 @@ def criar_gabarito():
 
         data_frame = tv.selection()[0]
         values = tv.item(data_frame, 'values')
-        questoes, pesos = obter_dataframe(f'bancodedados/{values[1]}.xlsx')
+        questoes, pesos = obter_dataframe(f'bancodedados/{values[2]}/{values[3]}/{values[1]}.xlsx')
 
         retirar = values[1][values[1].find('[')::]
         gabarito = values[1].replace(retirar,'')
         imput.insert(0, gabarito)
 
         limite_inferior = values[1].find('[')
-        limite_superior = values[1].find(']')
+        limite_superior = values[1].find(',')
+        turma = values[1][values[1].find(',')+1:
+                        values[1].find('2')+6]
+        semestre = values[1][values[1].find('semestre'):
+                            values[1].find('semestre')+10]
+        tipo = values[1][values[1].find('semestre')+11:
+                            values[1].find(']')]
+        
         materia = values[1][limite_inferior+1:limite_superior]
         caixa_materias.insert(0, materia)
+        caixa_turmas.insert(0, turma)
+        caixa_semestre.insert(0, semestre)
+        caixa_tipo.insert(0, tipo)
+    
 
 
         for i in range(len(caixa_questoes)):
@@ -74,7 +89,7 @@ def criar_gabarito():
     caixa_questoes = []
     materias = ['Mátematica', 'Ciências Humanas', 'Ciências da Natureza', 'Linguagens']
     turmas = ['1° Ano', '2° Ano', '3° Ano']
-    semestre = ['Semestre 1', 'Semestre 1']
+    semestre = ['semestre 1', 'semestre 2']
     tipo = ['semestral', 'Recuperação']
     alternativas = ['A', 'B', 'C', 'D', 'E']
     questoes_marcadas = []
@@ -182,15 +197,16 @@ def criar_gabarito():
 
 
 
-    gabaritos = os.listdir(path='C:/Users/usuario/Desktop/visãoprovas/bancodedados')
+    gabaritos = lista_arquivos_subdiretorios()
+    print(gabaritos)
     gabarito_corrigido =  []
 
-    for gabarito in gabaritos:
-        print(gabarito.find('.xlsx'))
-        if  '.xlsx' in gabarito:
-            retirar = gabarito[gabarito.find('.')::]
-            gabarito = gabarito.replace(retirar, '')
-            gabarito_corrigido.append(gabarito)
+    for i in range(len(gabaritos)):
+        for q in range(len(gabaritos[i])):
+            print(gabaritos[i][q])
+            retirar = gabaritos[i][q][gabaritos[i][q].find('.')::]
+            gabaritos[i][q] = gabaritos[i][q].replace(retirar, '')
+            gabarito_corrigido.append(gabaritos[i][q])
     
 
     tv = ttk.Treeview(frame_tabela)
@@ -207,7 +223,12 @@ def criar_gabarito():
     tv.heading('Semestre', text='Semestre', anchor=N)
 
     for i in range(len(gabarito_corrigido)):
-        tv.insert(parent='', index=i, iid=i, text='', values=(i, gabarito_corrigido[i], 2020, 2002))
+        ano_turma = gabarito_corrigido[i][gabarito_corrigido[i].find(',')+1:
+                                          gabarito_corrigido[i].find('Ano')]
+        semestre_numero = gabarito_corrigido[i][gabarito_corrigido[i].find('semestre')+8:
+                                                gabarito_corrigido[i].find(',semestral')-12]
+
+        tv.insert(parent='', index=i, iid=i, text='', values=(i, gabarito_corrigido[i],f'{ano_turma}Ano',f'semestre{semestre_numero}'))
     tv.pack()
     
 

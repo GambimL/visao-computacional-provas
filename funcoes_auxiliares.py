@@ -1,5 +1,6 @@
 import numpy as np
 import os
+from itertools import chain
 
 def trasnforma_letra_para_numero(dados):
         alternativas = []
@@ -44,15 +45,25 @@ def concerta_array(array):
     print(array_corrigido)
     return array_corrigido
 
-def lista_arquivos_subdiretorios():
+def lista_arquivos_subdiretorios(diretorio):
     arquivos = []
-    subdiretorios = os.listdir('C:/Users/usuario/Desktop/visãoprovas/bancodedados')
-    for subdiretorio in subdiretorios:
-        subsubdiretorios1 = os.listdir(f'C:/Users/usuario/Desktop/visãoprovas/bancodedados/{subdiretorio}')
-        for subsubdiretorio1 in subsubdiretorios1: 
-            arquivos.append(os.listdir(f'C:/Users/usuario/Desktop/visãoprovas/bancodedados/{subdiretorio}/{subsubdiretorio1}'))
-    
+    subdiretorios = os.listdir(diretorio)
+    for i in range(len(subdiretorios)):
+        subsubdiretorio1 = os.listdir(f'{diretorio}/{subdiretorios[i]}')
+        for q in range(len(subsubdiretorio1)):
+            arquivos.append(os.listdir(f'{diretorio}/{subdiretorios[i]}/{subsubdiretorio1[q]}'))
+
+    arquivos = sum(arquivos, [])
     return arquivos
+
+def retira_extensao(arquivo):
+    retirar = arquivo[arquivo.find('.')::]
+    arquivo = arquivo.replace(retirar, '')
+    return arquivo
+            
+
+    
+     
 
 
          

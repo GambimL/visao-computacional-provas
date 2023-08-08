@@ -197,16 +197,12 @@ def criar_gabarito():
 
 
 
-    gabaritos = lista_arquivos_subdiretorios()
+    gabaritos = lista_arquivos_subdiretorios('C:/Users/usuario/Desktop/visãoprovas/bancodedados')
     print(gabaritos)
     gabarito_corrigido =  []
 
     for i in range(len(gabaritos)):
-        for q in range(len(gabaritos[i])):
-            print(gabaritos[i][q])
-            retirar = gabaritos[i][q][gabaritos[i][q].find('.')::]
-            gabaritos[i][q] = gabaritos[i][q].replace(retirar, '')
-            gabarito_corrigido.append(gabaritos[i][q])
+        gabarito_corrigido.append(retira_extensao(gabaritos[i]))
     
 
     tv = ttk.Treeview(frame_tabela)
@@ -226,7 +222,7 @@ def criar_gabarito():
         ano_turma = gabarito_corrigido[i][gabarito_corrigido[i].find(',')+1:
                                           gabarito_corrigido[i].find('Ano')]
         semestre_numero = gabarito_corrigido[i][gabarito_corrigido[i].find('semestre')+8:
-                                                gabarito_corrigido[i].find(',semestral')-12]
+                                                gabarito_corrigido[i].find('semestre')+10]
 
         tv.insert(parent='', index=i, iid=i, text='', values=(i, gabarito_corrigido[i],f'{ano_turma}Ano',f'semestre{semestre_numero}'))
     tv.pack()
@@ -240,17 +236,26 @@ def corrigir_provas():
     webcam = cv2.VideoCapture(0)
 
     def selecionar_gabarito():
+
         nome_gabarito = str(caixa_gabaritos.get())
-        questoes, pesos = obter_dataframe(f'bancodedados/{nome_gabarito}.xlsx')
+        ano_turma = nome_gabarito[nome_gabarito.find(',')+1:
+                                          nome_gabarito.find('Ano')]
+        semestre_numero = nome_gabarito[nome_gabarito.find('semestre')+8:
+                                                nome_gabarito.find('semestre')+10]
+        questoes, pesos = obter_dataframe(f'bancodedados/{ano_turma}Ano/semestre{semestre_numero}/{nome_gabarito}.xlsx')
         alternativas = trasnforma_letra_para_numero(questoes)
         for i in range(len(alternativas)):
             tv.insert(parent='', index=i, iid=i, text='', values=(f'Qestão{i+1}', questoes[i], pesos[i]))
-            
-           
+        
 
+            
     def processar_gabarito():
         nome_gabarito = str(caixa_gabaritos.get())
-        questoes, pesos = obter_dataframe(f'bancodedados/{nome_gabarito}.xlsx')
+        ano_turma = nome_gabarito[nome_gabarito.find(',')+1:
+                                          nome_gabarito.find('Ano')]
+        semestre_numero = nome_gabarito[nome_gabarito.find('semestre')+8:
+                                                nome_gabarito.find('semestre')+10]
+        questoes, pesos = obter_dataframe(f'bancodedados/{ano_turma}Ano/semestre{semestre_numero}/{nome_gabarito}.xlsx')
         alternativas = trasnforma_letra_para_numero(questoes)
 
         if webcam.isOpened():
@@ -313,16 +318,13 @@ def corrigir_provas():
 
     frame_tabela = Frame(window)
     frame_tabela.pack(side = 'left')
-    gabaritos = os.listdir(path='C:/Users/usuario/Desktop/visãoprovas/bancodedados')
-    gabarito_corrigido = []
-    for gabarito in gabaritos:
-        retirar = gabarito[gabarito.find('.')::]
-        gabarito = gabarito.replace(retirar, '')
-        gabarito_corrigido.append(gabarito)
+    gabaritos = lista_arquivos_subdiretorios('C:/Users/usuario/Desktop/visãoprovas/bancodedados')
+    print(gabaritos)
+    gabarito_corrigido =  []
+
+    for i in range(len(gabaritos)):
+        gabarito_corrigido.append(retira_extensao(gabaritos[i]))
     
-
-
-        
     caixa_gabaritos = ttk.Combobox(frame_tabela, value=gabarito_corrigido, width=45)
     caixa_gabaritos.pack(pady = 20)
 

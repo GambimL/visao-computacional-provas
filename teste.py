@@ -4,7 +4,8 @@ import cv2
 import numpy as np
 import os 
 
-string = 'gabarito_teste4[Ciências Humanas]'
-print(string.find('['))
-print(string.find(']'))
-print(string[string.find('[')+1:string.find(']')])
+lista_de_listas = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
+lista_unica = sum(lista_de_listas, [])
+
+print(lista_unica)
+

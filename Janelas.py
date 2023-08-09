@@ -258,37 +258,7 @@ def corrigir_provas():
         questoes, pesos = obter_dataframe(f'bancodedados/{ano_turma}Ano/semestre{semestre_numero}/{nome_gabarito}.xlsx')
         alternativas = trasnforma_letra_para_numero(questoes)
 
-        if webcam.isOpened():
-            validacao, frame = webcam.read()
-            while validacao:
-                    validacao, frame = webcam.read()
-                    gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-                    blurred = cv2.GaussianBlur(gray, (5, 5), 0)
-                    edged = cv2.Canny(blurred, 75, 200)
-                    kernel = np.ones((2,2),np.uint8)
-                    edged = cv2.dilate(edged,kernel,iterations = 1)
-
-
-                    cnts = cv2.findContours(edged.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-                    cnts = imutils.grab_contours(cnts)
-                    doCnt = None
-
-                    if len(cnts) > 0:
-                        cnts = sorted(cnts, key=cv2.contourArea, reverse=True)
-                        for c in cnts:
-                            peri = cv2.arcLength(c, True)
-                            approx = cv2.approxPolyDP(c, 0.02 * peri, True)
-
-                            if len(approx == 4):
-                                doCnt = approx
-                                cv2.drawContours(frame, [doCnt],-1, (0, 0, 255), 2)
-                
-                        
-
-                    cv2.imshow("Video da Webcam", frame)
-                    key = cv2.waitKey(5)
-                    if key == 27: # ESC
-                        break
+        frame = abre_camera()
 
         webcam.release()
         paper, corretas, pesos_corretas, posicao_corretas, texto_aluno = pre_processa_imagem(frame, alternativas, pesos)
@@ -311,7 +281,13 @@ def corrigir_provas():
             else:
                 tv2.insert(parent='', index=i, iid=i, text='', values=(f'Qestão{i+1}', questoes[i], 'Certo'))
 
-        cv2.imshow("foto corretas", paper)
+        gabarito = caixa_gabaritos.get()
+        aluno = nome_aluno.get()
+        gabarito = gabarito[::gabarito.find('[')]
+        cv2.imwrite(f"{aluno}.png", paper)
+        
+        
+
     
     window = Tk()
     window.config(padx=100, pady=100)

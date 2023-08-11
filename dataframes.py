@@ -21,10 +21,6 @@ def obter_dataframe(dataframename):
         questoes.append(planilhas.loc[i, 'Questões'])
         pesos.append(planilhas.loc[i, 'Peso'])
 
-    
-        
-
-    
     return questoes, pesos
 
 def atualizar_dataframe(dataframename, questoesnovas, pesosnovos):
@@ -36,6 +32,22 @@ def atualizar_dataframe(dataframename, questoesnovas, pesosnovos):
 
     os.makedirs('C:/Users/usuario/Desktop/visãoprovas/bancodedados', exist_ok=True)
     planilhas.to_excel(f'C:/Users/usuario/Desktop/visãoprovas/bancodedados/{dataframename}')
+
+def criar_dataframe_generico(nome, caminho, aluno, colunas, informacoes_colunas):
+
+    dataframe = pd.DataFrame({
+        'aluno': aluno
+    })
+    for i in range(len(colunas)):
+        for g in range(len(informacoes_colunas[i])):
+            dataframe[colunas[i]] = informacoes_colunas[i][g]
+    
+
+    os.makedirs(f'{caminho}', exist_ok=True)
+    dataframe.to_excel(f'{caminho}/{nome}')
+
+
+
     
 
 

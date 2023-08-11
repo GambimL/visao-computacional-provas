@@ -96,7 +96,15 @@ def abre_camera():
                     key = cv2.waitKey(5)
                     if key == 27: # ESC
                         break
+                    
     return frame
+
+def salva_imagem(imagem, diretorio, nome_de_saida):
+    filename = 'imagens_gabaritos/' + str(nome_de_saida)
+    print(filename)
+    saida = cv2.imwrite(filename, imagem)
+    print(f'imagem salva com socesso: {saida}')
+
             
 
     

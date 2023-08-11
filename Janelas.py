@@ -275,16 +275,36 @@ def corrigir_provas():
         for i in range(len(posicao_corretas)):
             gabarito_aluno[posicao_corretas[i]] = 1
 
+        resultado_gabarito = []
+
         for i in range(len(gabarito_aluno)):
             if gabarito_aluno[i] == 0:
                 tv2.insert(parent='', index=i, iid=i, text='', values=(f'Qestão{i+1}', questoes[i], 'Errado'))
+                resultado_gabarito.append('Errado')
             else:
                 tv2.insert(parent='', index=i, iid=i, text='', values=(f'Qestão{i+1}', questoes[i], 'Certo'))
+                resultado_gabarito.append('Certo')
 
         gabarito = caixa_gabaritos.get()
         aluno = nome_aluno.get()
         gabarito = gabarito[::gabarito.find('[')]
-        cv2.imwrite(f"{aluno}.png", paper)
+        print(texto_aluno) 
+        texto_aluno = texto_aluno.replace(' ', '')
+        texto_aluno = texto_aluno + ".png"
+        print(texto_aluno)
+        cv2.imshow(texto_aluno, paper)
+        salva_imagem(paper, 'imagens_gabaritos', texto_aluno )
+
+        dataframe = 'C:/Users/usuario/Desktop/visãoprovas/tabelas_gabaritos'
+        if dataframe not in locals():
+            criar_dataframe_generico('nomegenerico', 
+                                     'C:/Users/usuario/Desktop/visãoprovas/tabelas_gabaritos',
+                                     aluno,
+                                     questoes,
+                                     resultado)
+            
+
+
         
         
 

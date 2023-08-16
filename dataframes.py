@@ -33,18 +33,18 @@ def atualizar_dataframe(dataframename, questoesnovas, pesosnovos):
     os.makedirs('C:/Users/usuario/Desktop/visãoprovas/bancodedados', exist_ok=True)
     planilhas.to_excel(f'C:/Users/usuario/Desktop/visãoprovas/bancodedados/{dataframename}')
 
-def criar_dataframe_generico(nome, caminho, aluno, colunas, informacoes_colunas):
+def criar_dataframe_generico(nome, export, coluna_inicial, nome_coluna_inicial, colunas, informacoes_colunas):
 
     dataframe = pd.DataFrame({
-        'aluno': aluno
+        nome_coluna_inicial : coluna_inicial
     })
     for i in range(len(colunas)):
         for g in range(len(informacoes_colunas[i])):
-            dataframe[colunas[i]] = informacoes_colunas[i][g]
+            dataframe[colunas[i]] = informacoes_colunas[i]
     
 
-    os.makedirs(f'{caminho}', exist_ok=True)
-    dataframe.to_excel(f'{caminho}/{nome}')
+    os.makedirs(f'{export}', exist_ok=True)
+    dataframe.to_excel(f'{export}/{nome}')
 
 
 

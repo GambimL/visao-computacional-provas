@@ -6,8 +6,6 @@ import os
 from PIL import Image, ImageTk
 
 def main():
-    
-
 
     window = Tk()
     window.title('Corretor de Provas')

@@ -11,6 +11,7 @@ from imutils import contours
 import imutils
 import numpy as np
 import pytesseract
+from conexão import *
 
 
 
@@ -20,6 +21,9 @@ def criar_gabarito():
 
     def executar_comando():
 
+        conexao = conectar('localhost', 'root', '', 'gabaritos')    
+
+
 
         area = str(caixa_materias.get())
         turma = str(caixa_turmas.get())
@@ -27,11 +31,19 @@ def criar_gabarito():
         tipo = str(caixa_tipo.get())
         nome_gabarito = str(imput.get())
 
+        valores_prova = (nome_gabarito, turma, tipo, semestre, area)
+        inserir_tabela(conexao, 'provas', '(nome, turma, tipo, semestre, area)', 
+                       '(%s, %s, %s, %s, %s)', valores_prova)
+
         for caixa in caixa_questoes:
-            questoes_marcadas.append(caixa.get())
+           questoes_marcadas.append(caixa.get())
 
         for peso in pesos:
-            peso_questoes.append(peso.get())
+           peso_questoes.append(peso.get())
+        
+        for i in range(len(pesos)):
+            valores_questoes = (f'questao {i+1}', questoes_marcadas[i], peso_questoes[i]) 
+            inserir_tabela(conexao, 'questoes','(questao, letracerta, peso)', '(%s, %s, %s)', valores_questoes)
 
 
 
@@ -39,6 +51,8 @@ def criar_gabarito():
         criar_dataframe(nome_gabarito, questoes_marcadas,
                          peso_questoes, area,
                          turma, semestre, tipo)
+        
+        desconectar(conexao)
 
 
     def obter_valores_da_tabela():
@@ -230,7 +244,9 @@ def criar_gabarito():
 
 
     window.mainloop()
-
+    
+dados_corrigidos = []
+dados_alunos = []
 
 def corrigir_provas():
     webcam = cv2.VideoCapture(0)
@@ -248,8 +264,13 @@ def corrigir_provas():
             tv.insert(parent='', index=i, iid=i, text='', values=(f'Qestão{i+1}', questoes[i], pesos[i]))
         
 
-            
+   
     def processar_gabarito():
+        global dados_corrigidos
+        global dados_alunos
+
+        nome_aluno.delete(0, END)
+        nota.delete(0, END)
         nome_gabarito = str(caixa_gabaritos.get())
         ano_turma = nome_gabarito[nome_gabarito.find(',')+1:
                                           nome_gabarito.find('Ano')]
@@ -259,7 +280,7 @@ def corrigir_provas():
         alternativas = trasnforma_letra_para_numero(questoes)
 
         frame = abre_camera()
-
+        
         webcam.release()
         paper, corretas, pesos_corretas, posicao_corretas, texto_aluno = pre_processa_imagem(frame, alternativas, pesos)
         acertos = len(corretas)
@@ -295,13 +316,28 @@ def corrigir_provas():
         cv2.imshow(texto_aluno, paper)
         salva_imagem(paper, 'imagens_gabaritos', texto_aluno )
 
-        dataframe = 'C:/Users/usuario/Desktop/visãoprovas/tabelas_gabaritos'
-        if dataframe not in locals():
-            criar_dataframe_generico('nomegenerico', 
-                                     'C:/Users/usuario/Desktop/visãoprovas/tabelas_gabaritos',
-                                     aluno,
-                                     questoes,
-                                     resultado)
+        dados_corrigidos.append(resultado_gabarito)
+        print(dados_corrigidos)
+
+
+
+
+
+
+
+        
+
+
+            
+            
+        # dataframe = 'C:/Users/usuario/Desktop/visãoprovas/tabelas_gabaritos'
+        #     # criar_dataframe_generico('nomegenerico', 
+        #     #                          'C:/Users/usuario/Desktop/visãoprovas/tabelas_gabaritos',
+        #     #                          aluno,
+        #     #                          questoes,
+        #     #                          resultado)
+        
+        
             
 
 
@@ -311,6 +347,8 @@ def corrigir_provas():
     
     window = Tk()
     window.config(padx=100, pady=100)
+
+
 
     frame_tabela = Frame(window)
     frame_tabela.pack(side = 'left')
@@ -350,8 +388,6 @@ def corrigir_provas():
     label_aluno = Label(frame_dados, text='Nome do Aluno',  anchor=W)
     label_aluno.pack()
     nome_aluno = Entry(frame_dados, width=30)
-    nome_aluno.pack()
-
     label_nota = Label(frame_dados, text='Nota do Aluno', anchor=W)
     label_nota.pack()
     nota = Entry(frame_dados, width=30)

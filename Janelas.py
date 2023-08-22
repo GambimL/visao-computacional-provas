@@ -23,8 +23,6 @@ def criar_gabarito():
 
         conexao = conectar('localhost', 'root', '', 'gabaritos')    
 
-
-
         area = str(caixa_materias.get())
         turma = str(caixa_turmas.get())
         semestre = str(caixa_semestre.get())
@@ -32,8 +30,7 @@ def criar_gabarito():
         nome_gabarito = str(imput.get())
 
         valores_prova = (nome_gabarito, turma, tipo, semestre, area)
-        inserir_tabela(conexao, 'provas', '(nome, turma, tipo, semestre, area)', 
-                       '(%s, %s, %s, %s, %s)', valores_prova)
+        inserir_tabela(conexao, 'provas', '(nome, turma, tipo, semestre, area)', '(%s, %s, %s, %s, %s)', valores_prova)
 
         for caixa in caixa_questoes:
            questoes_marcadas.append(caixa.get())
@@ -42,58 +39,69 @@ def criar_gabarito():
            peso_questoes.append(peso.get())
         
         for i in range(len(pesos)):
-            valores_questoes = (f'questao {i+1}', questoes_marcadas[i], peso_questoes[i]) 
-            inserir_tabela(conexao, 'questoes','(questao, letracerta, peso)', '(%s, %s, %s)', valores_questoes)
+            valores_questoes = (f'questao {i+1}', questoes_marcadas[i], peso_questoes[i], nome_gabarito) 
+            inserir_tabela(conexao, 'questoes','(questao, letracerta, peso, prova)', '(%s, %s, %s, %s)', valores_questoes)
 
-
-
-        print(questoes_marcadas) 
-        criar_dataframe(nome_gabarito, questoes_marcadas,
-                         peso_questoes, area,
-                         turma, semestre, tipo)
-        
         desconectar(conexao)
 
 
     def obter_valores_da_tabela():
 
+        conexao = conectar('localhost', 'root', '', 'gabaritos')   
         imput.delete(0, END)
         caixa_materias.delete(0, END)
         caixa_semestre.delete(0, END)
         caixa_turmas.delete(0, END)
         caixa_tipo.delete(0, END)
-
-        for caixa in caixa_questoes:
-            caixa.delete(0, END)
-
+        for i in range(len(caixa_questoes)):
+            caixa_questoes[i].delete(0, END)
+            pesos[i].delete(0, END)
 
         data_frame = tv.selection()[0]
         values = tv.item(data_frame, 'values')
-        questoes, pesos = obter_dataframe(f'bancodedados/{values[2]}/{values[3]}/{values[1]}.xlsx')
 
-        retirar = values[1][values[1].find('[')::]
-        gabarito = values[1].replace(retirar,'')
-        imput.insert(0, gabarito)
+        seletor_questoes = f"prova = '{values[1]}'"
+        seletor_provas = f"nome = '{values[1]}'"
 
-        limite_inferior = values[1].find('[')
-        limite_superior = values[1].find(',')
-        turma = values[1][values[1].find(',')+1:
-                        values[1].find('2')+6]
-        semestre = values[1][values[1].find('semestre'):
-                            values[1].find('semestre')+10]
-        tipo = values[1][values[1].find('semestre')+11:
-                            values[1].find(']')]
-        
-        materia = values[1][limite_inferior+1:limite_superior]
-        caixa_materias.insert(0, materia)
-        caixa_turmas.insert(0, turma)
-        caixa_semestre.insert(0, semestre)
-        caixa_tipo.insert(0, tipo)
-    
+
+        dados_questoes = consultar_tabela(conexao, 'questoes', 'letracerta, peso', seletor_questoes)
+        dados_provas = consultar_tabela(conexao, 'provas', 'nome , turma, tipo, semestre, area', seletor_provas)
+
+
+        caixa_materias.insert(0, dados_provas[0][4])
+        caixa_turmas.insert(0, dados_provas[0][1])
+        caixa_semestre.insert(0, dados_provas[0][3])
+        caixa_tipo.insert(0, dados_provas[0][2])
+        imput.insert(0, dados[0][0])
+        print(len(dados_questoes))
 
 
         for i in range(len(caixa_questoes)):
-            caixa_questoes[i].insert(0,f'{questoes[i]}')
+            caixa_questoes[i].insert(0,dados_questoes[i][0])
+            pesos[i].insert(0, dados_questoes[i][1])
+        desconectar(conexao)
+
+    def atualizar():
+        conexao = conectar('localhost', 'root', '', 'gabaritos')  
+
+        area = str(caixa_materias.get())
+        turma = str(caixa_turmas.get())
+        semestre = str(caixa_semestre.get())
+        tipo = str(caixa_tipo.get())
+        nome_gabarito = str(imput.get())
+
+        values = f"letracerta = {area}"
+
+        valores_prova = (nome_gabarito, turma, tipo, semestre, area)
+        atualiza_tabela(conexao, 'provas', '(nome, turma, tipo, semestre, area)', '(%s, %s, %s, %s, %s)', valores_prova)
+
+
+
+
+
+        desconectar(conexao)
+
+        
        
 
     window = Tk()
@@ -124,7 +132,6 @@ def criar_gabarito():
     frame_areas_turmas = Frame(frame_infos, bg='WHITE')
     frame_areas_turmas.pack(side='left')
 
-
     label_materias = Label(frame_areas_turmas, text='Areas', bg='WHITE')
     label_materias.pack(side = 'top')
     caixa_materias = ttk.Combobox(frame_areas_turmas, value=materias)
@@ -150,7 +157,6 @@ def criar_gabarito():
 
 
     alternativas = ['A', 'B', 'C', 'D', 'E']
-
 
     def criar_frame_questao(parent, questao, iterador):
         frame_questao = Frame(parent, bg='WHITE')
@@ -203,7 +209,11 @@ def criar_gabarito():
     salvar.pack(side = 'left', padx=10)
 
     obter = Button(window, text='Obter', command=obter_valores_da_tabela, width=20)
-    obter.pack(side = 'left')
+    obter.pack(side = 'left', padx=10)
+
+    editar = Button(window, text='Editar', command=obter_valores_da_tabela, width=20)
+    editar.pack(side = 'left')
+
 
 
     frame_tabela = Frame(window, bg='WHITE')
@@ -212,12 +222,14 @@ def criar_gabarito():
 
 
     gabaritos = lista_arquivos_subdiretorios('C:/Users/usuario/Desktop/visãoprovas/bancodedados')
-    print(gabaritos)
     gabarito_corrigido =  []
 
     for i in range(len(gabaritos)):
         gabarito_corrigido.append(retira_extensao(gabaritos[i]))
     
+    conexao = conectar('localhost', 'root', '', 'gabaritos')  
+    dados = consultar_tabela(conexao, 'provas', 'nome, turma, semestre', 1)
+    desconectar(conexao)
 
     tv = ttk.Treeview(frame_tabela)
     tv['columns'] = ('numero', 'Gabarito', 'Turma', 'Semestre')
@@ -232,13 +244,10 @@ def criar_gabarito():
     tv.heading('Turma', text='Turma', anchor=N)
     tv.heading('Semestre', text='Semestre', anchor=N)
 
-    for i in range(len(gabarito_corrigido)):
-        ano_turma = gabarito_corrigido[i][gabarito_corrigido[i].find(',')+1:
-                                          gabarito_corrigido[i].find('Ano')]
-        semestre_numero = gabarito_corrigido[i][gabarito_corrigido[i].find('semestre')+8:
-                                                gabarito_corrigido[i].find('semestre')+10]
+    for i in range(len(dados)):
+        
 
-        tv.insert(parent='', index=i, iid=i, text='', values=(i, gabarito_corrigido[i],f'{ano_turma}Ano',f'semestre{semestre_numero}'))
+        tv.insert(parent='', index=i, iid=i, text='', values=(i, dados[i][0], dados[i][1],dados[i][2]))
     tv.pack()
     
 
@@ -252,7 +261,6 @@ def corrigir_provas():
     webcam = cv2.VideoCapture(0)
 
     def selecionar_gabarito():
-
         nome_gabarito = str(caixa_gabaritos.get())
         ano_turma = nome_gabarito[nome_gabarito.find(',')+1:
                                           nome_gabarito.find('Ano')]
@@ -309,42 +317,13 @@ def corrigir_provas():
         gabarito = caixa_gabaritos.get()
         aluno = nome_aluno.get()
         gabarito = gabarito[::gabarito.find('[')]
-        print(texto_aluno) 
         texto_aluno = texto_aluno.replace(' ', '')
         texto_aluno = texto_aluno + ".png"
-        print(texto_aluno)
         cv2.imshow(texto_aluno, paper)
         salva_imagem(paper, 'imagens_gabaritos', texto_aluno )
 
         dados_corrigidos.append(resultado_gabarito)
-        print(dados_corrigidos)
 
-
-
-
-
-
-
-        
-
-
-            
-            
-        # dataframe = 'C:/Users/usuario/Desktop/visãoprovas/tabelas_gabaritos'
-        #     # criar_dataframe_generico('nomegenerico', 
-        #     #                          'C:/Users/usuario/Desktop/visãoprovas/tabelas_gabaritos',
-        #     #                          aluno,
-        #     #                          questoes,
-        #     #                          resultado)
-        
-        
-            
-
-
-        
-        
-
-    
     window = Tk()
     window.config(padx=100, pady=100)
 

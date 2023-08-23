@@ -19,90 +19,87 @@ from conexão import *
 
 def criar_gabarito():
 
-    def executar_comando():
+    def conexao_com_banco(comando):
 
-        conexao = conectar('localhost', 'root', '', 'gabaritos')    
+        if comando == "inserir na tabela":
+            conexao = conectar('localhost', 'root', '', 'gabaritos')    
 
-        area = str(caixa_materias.get())
-        turma = str(caixa_turmas.get())
-        semestre = str(caixa_semestre.get())
-        tipo = str(caixa_tipo.get())
-        nome_gabarito = str(imput.get())
+            area = str(caixa_materias.get())
+            turma = str(caixa_turmas.get())
+            semestre = str(caixa_semestre.get())
+            tipo = str(caixa_tipo.get())
+            nome_gabarito = str(imput.get())
 
-        valores_prova = (nome_gabarito, turma, tipo, semestre, area)
-        inserir_tabela(conexao, 'provas', '(nome, turma, tipo, semestre, area)', '(%s, %s, %s, %s, %s)', valores_prova)
+            valores_prova = (nome_gabarito, turma, tipo, semestre, area)
+            inserir_tabela(conexao, 'provas', '(nome, turma, tipo, semestre, area)', '(%s, %s, %s, %s, %s)', valores_prova)
 
-        for caixa in caixa_questoes:
-           questoes_marcadas.append(caixa.get())
+            for caixa in caixa_questoes:
+                questoes_marcadas.append(caixa.get())
 
-        for peso in pesos:
-           peso_questoes.append(peso.get())
-        
-        for i in range(len(pesos)):
-            valores_questoes = (f'questao {i+1}', questoes_marcadas[i], peso_questoes[i], nome_gabarito) 
-            inserir_tabela(conexao, 'questoes','(questao, letracerta, peso, prova)', '(%s, %s, %s, %s)', valores_questoes)
+            for peso in pesos:
+                peso_questoes.append(peso.get())
+            
+            for i in range(len(pesos)):
+                valores_questoes = (f'questao {i+1}', questoes_marcadas[i], peso_questoes[i], nome_gabarito) 
+                inserir_tabela(conexao, 'questoes','(questao, letracerta, peso, prova)', '(%s, %s, %s, %s)', valores_questoes)
 
-        desconectar(conexao)
+            desconectar(conexao)
 
+        elif comando == "obter da tabela":
+            conexao = conectar('localhost', 'root', '', 'gabaritos')   
+            print("teste")
+            imput.delete(0, END)
+            caixa_materias.delete(0, END)
+            caixa_semestre.delete(0, END)
+            caixa_turmas.delete(0, END)
+            caixa_tipo.delete(0, END)
+            for i in range(len(caixa_questoes)):
+                caixa_questoes[i].delete(0, END)
+                pesos[i].delete(0, END)
 
-    def obter_valores_da_tabela():
+            data_frame = tv.selection()[0]
+            values = tv.item(data_frame, 'values')
 
-        conexao = conectar('localhost', 'root', '', 'gabaritos')   
-        imput.delete(0, END)
-        caixa_materias.delete(0, END)
-        caixa_semestre.delete(0, END)
-        caixa_turmas.delete(0, END)
-        caixa_tipo.delete(0, END)
-        for i in range(len(caixa_questoes)):
-            caixa_questoes[i].delete(0, END)
-            pesos[i].delete(0, END)
-
-        data_frame = tv.selection()[0]
-        values = tv.item(data_frame, 'values')
-
-        seletor_questoes = f"prova = '{values[1]}'"
-        seletor_provas = f"nome = '{values[1]}'"
-
-
-        dados_questoes = consultar_tabela(conexao, 'questoes', 'letracerta, peso', seletor_questoes)
-        dados_provas = consultar_tabela(conexao, 'provas', 'nome , turma, tipo, semestre, area', seletor_provas)
+            seletor_questoes = f"prova = '{values[1]}'"
+            seletor_provas = f"nome = '{values[1]}'"
+            print(values[1])
 
 
-        caixa_materias.insert(0, dados_provas[0][4])
-        caixa_turmas.insert(0, dados_provas[0][1])
-        caixa_semestre.insert(0, dados_provas[0][3])
-        caixa_tipo.insert(0, dados_provas[0][2])
-        imput.insert(0, dados[0][0])
-        print(len(dados_questoes))
+            dados_questoes = consultar_tabela(conexao, 'questoes', 'letracerta, peso', seletor_questoes)
+            dados_provas = consultar_tabela(conexao, 'provas', 'nome , turma, tipo, semestre, area', seletor_provas)
 
 
-        for i in range(len(caixa_questoes)):
-            caixa_questoes[i].insert(0,dados_questoes[i][0])
-            pesos[i].insert(0, dados_questoes[i][1])
-        desconectar(conexao)
-
-    def atualizar():
-        conexao = conectar('localhost', 'root', '', 'gabaritos')  
-
-        area = str(caixa_materias.get())
-        turma = str(caixa_turmas.get())
-        semestre = str(caixa_semestre.get())
-        tipo = str(caixa_tipo.get())
-        nome_gabarito = str(imput.get())
-
-        values = f"letracerta = {area}"
-
-        valores_prova = (nome_gabarito, turma, tipo, semestre, area)
-        atualiza_tabela(conexao, 'provas', '(nome, turma, tipo, semestre, area)', '(%s, %s, %s, %s, %s)', valores_prova)
+            caixa_materias.insert(0, dados_provas[0][4])
+            caixa_turmas.insert(0, dados_provas[0][1])
+            caixa_semestre.insert(0, dados_provas[0][3])
+            caixa_tipo.insert(0, dados_provas[0][2])
+            imput.insert(0, dados_provas[0][0])
 
 
+            for i in range(len(caixa_questoes)):
+                caixa_questoes[i].insert(0,dados_questoes[i][0])
+                pesos[i].insert(0, dados_questoes[i][1])
+            desconectar(conexao)
+            
+        elif comando == "atualizar tabela": 
+            data_frame = tv.selection()[0]
+            values_tabela = tv.item(data_frame, 'values')
+            area = str(caixa_materias.get())
+            turma = str(caixa_turmas.get())
+            semestre = str(caixa_semestre.get())
+            tipo = str(caixa_tipo.get())
+            nome_gabarito = str(imput.get())
+            values_provas = f"nome = '{nome_gabarito}', area = '{area}', semestre = '{semestre}', turma = '{turma}'"
+            seletor_provas = f"nome = '{values_tabela[1]}'" 
 
+            conexao = conectar('localhost', 'root', '', 'gabaritos')  
+            valores_prova = (nome_gabarito, turma, tipo, semestre, area)
+            atualiza_tabela(conexao, 'provas',values_provas, seletor_provas)
+            desconectar(conexao) 
 
+        elif comando == "teste":
+            print("TESTANDO A FUNÇÃO...")
 
-        desconectar(conexao)
-
-        
-       
 
     window = Tk()
     window.config(padx=50, pady=50, bg='WHITE')
@@ -116,47 +113,9 @@ def criar_gabarito():
     alternativas = ['A', 'B', 'C', 'D', 'E']
     questoes_marcadas = []
     peso_questoes = []
-
-    
-    frame_areas_turmas = Frame(window, bg='WHITE')
-    frame_areas_turmas.pack(side='left')
-
-    nome_do_gabarito = Label(window, text='Nome do Gabarito', anchor=W, bg='WHITE')
-    nome_do_gabarito.pack()
-    imput = Entry(window, width = 45)
-    imput.pack()
-
-    frame_infos = Frame(window, bg="WHITE")
-    frame_infos.pack()
-
-    frame_areas_turmas = Frame(frame_infos, bg='WHITE')
-    frame_areas_turmas.pack(side='left')
-
-    label_materias = Label(frame_areas_turmas, text='Areas', bg='WHITE')
-    label_materias.pack(side = 'top')
-    caixa_materias = ttk.Combobox(frame_areas_turmas, value=materias)
-    caixa_materias.pack()
-
-    label_turmas = Label(frame_areas_turmas, text='Turmas', bg='WHITE')
-    label_turmas.pack(side = 'top')
-    caixa_turmas = ttk.Combobox(frame_areas_turmas, value=turmas)
-    caixa_turmas.pack()
-
-    frame_semestre_tipo = Frame(frame_infos, bg='WHITE')
-    frame_semestre_tipo.pack(side='left')
-
-    label_semestre = Label(frame_semestre_tipo, text='semestre', bg='WHITE')
-    label_semestre.pack(side = 'top')
-    caixa_semestre = ttk.Combobox(frame_semestre_tipo, value=semestre)
-    caixa_semestre.pack()
-
-    label_tipo = Label(frame_semestre_tipo, text='Tipo', bg='WHITE')
-    label_tipo.pack(side = 'top')
-    caixa_tipo = ttk.Combobox(frame_semestre_tipo, value=tipo)
-    caixa_tipo.pack()
-
-
-    alternativas = ['A', 'B', 'C', 'D', 'E']
+    caixa_questoes = []
+    inputs_infos = []
+    pesos = []
 
     def criar_frame_questao(parent, questao, iterador):
         frame_questao = Frame(parent, bg='WHITE')
@@ -168,11 +127,40 @@ def criar_gabarito():
         peso = Entry(frame_questao, width=5)
         peso.insert(0, 'Peso'),
         peso.pack()
-
         return label_questao, caixa_questao, peso
+    
 
-    caixa_questoes = []
-    pesos = []
+    nome_do_gabarito = Label(window, text='Nome do Gabarito', anchor=W, bg='WHITE')
+    nome_do_gabarito.pack()
+    imput = Entry(window, width = 45)
+    imput.pack()
+
+    frame_infos = Frame(window, bg="WHITE")
+    frame_infos.pack()
+    frame_areas_turmas = Frame(window, bg='RED')
+    frame_areas_turmas.pack()
+
+    label_materias = Label(frame_areas_turmas, text='Areas', bg='WHITE')
+    label_materias.pack(side='top')
+    caixa_materias = ttk.Combobox(frame_areas_turmas, value=materias)
+    caixa_materias.pack(side='top')
+
+    label_turmas = Label(frame_areas_turmas, text='Turmas', bg='WHITE')
+    label_turmas.pack(side='top')
+    caixa_turmas = ttk.Combobox(frame_areas_turmas, value=turmas)
+    caixa_turmas.pack(side='right')
+
+    label_semestre = Label(frame_areas_turmas, text='semestre', bg='WHITE')
+    label_semestre.pack()
+    caixa_semestre = ttk.Combobox(frame_areas_turmas, value=semestre)
+    caixa_semestre.pack(side='top')
+
+    label_tipo = Label(frame_areas_turmas, text='Tipo', bg='WHITE')
+    label_tipo.pack()
+    caixa_tipo = ttk.Combobox(frame_areas_turmas, value=tipo)
+    caixa_tipo.pack(side='right')
+
+
     frame_top = Frame(window, bg='WHITE')
     frame_top.pack(side = 'top')
     for questao in range(1, 6):
@@ -180,7 +168,6 @@ def criar_gabarito():
         caixa_questoes.append(caixa_questao)
         pesos.append(peso)
 
-  
     frame_top2 = Frame(window, bg='WHITE')
     frame_top2.pack(side = 'top')
     for questao in range(1, 6):
@@ -188,15 +175,12 @@ def criar_gabarito():
         caixa_questoes.append(caixa_questao)
         pesos.append(peso)
 
-
- 
     frame_top3 = Frame(window, bg='WHITE')
     frame_top3.pack(side = 'top')
     for questao in range(1, 6):
         label_questao, caixa_questao, peso = criar_frame_questao(frame_top3, questao, 10)
         caixa_questoes.append(caixa_questao)
         pesos.append(peso)
-
 
     frame_top4 = Frame(window, bg='WHITE')
     frame_top4.pack(side = 'top')
@@ -205,27 +189,17 @@ def criar_gabarito():
         caixa_questoes.append(caixa_questao)
         pesos.append(peso)
 
-    salvar = Button(window, text='Salvar', command=executar_comando, width=20)
+    salvar = Button(window, text='Salvar', command=lambda: conexao_com_banco("inserir na tabela"), width=20)
     salvar.pack(side = 'left', padx=10)
-
-    obter = Button(window, text='Obter', command=obter_valores_da_tabela, width=20)
+    obter = Button(window, text='Obter', command=lambda: conexao_com_banco("obter da tabela"), width=20)
     obter.pack(side = 'left', padx=10)
-
-    editar = Button(window, text='Editar', command=obter_valores_da_tabela, width=20)
+    editar = Button(window, text='Editar', command=lambda: conexao_com_banco("atualizar tabela"), width=20)
     editar.pack(side = 'left')
 
 
 
     frame_tabela = Frame(window, bg='WHITE')
     frame_tabela.pack(side = 'top', padx= 30, pady=30)
-
-
-
-    gabaritos = lista_arquivos_subdiretorios('C:/Users/usuario/Desktop/visãoprovas/bancodedados')
-    gabarito_corrigido =  []
-
-    for i in range(len(gabaritos)):
-        gabarito_corrigido.append(retira_extensao(gabaritos[i]))
     
     conexao = conectar('localhost', 'root', '', 'gabaritos')  
     dados = consultar_tabela(conexao, 'provas', 'nome, turma, semestre', 1)
@@ -245,7 +219,6 @@ def criar_gabarito():
     tv.heading('Semestre', text='Semestre', anchor=N)
 
     for i in range(len(dados)):
-        
 
         tv.insert(parent='', index=i, iid=i, text='', values=(i, dados[i][0], dados[i][1],dados[i][2]))
     tv.pack()

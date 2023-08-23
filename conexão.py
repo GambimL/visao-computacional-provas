@@ -22,12 +22,12 @@ def consultar_tabela(con, tabela, colunas, especificacao):
     for dado in cursor:
         dados.append(dado)
     cursor.close()  
-
     return dados
     
 def atualiza_tabela(con, tabela, values, especificacao):
     cursor = con.cursor()
     sql = f'UPDATE {tabela} SET {values} WHERE {especificacao}'
+    print(sql)
     cursor.execute(sql)
     cursor.close()
 

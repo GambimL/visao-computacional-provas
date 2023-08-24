@@ -64,10 +64,8 @@ def criar_gabarito():
             seletor_provas = f"nome = '{values[1]}'"
             print(values[1])
 
-
             dados_questoes = consultar_tabela(conexao, 'questoes', 'letracerta, peso', seletor_questoes)
             dados_provas = consultar_tabela(conexao, 'provas', 'nome , turma, tipo, semestre, area', seletor_provas)
-
 
             caixa_materias.insert(0, dados_provas[0][4])
             caixa_turmas.insert(0, dados_provas[0][1])
@@ -89,12 +87,25 @@ def criar_gabarito():
             semestre = str(caixa_semestre.get())
             tipo = str(caixa_tipo.get())
             nome_gabarito = str(imput.get())
-            values_provas = f"nome = '{nome_gabarito}', area = '{area}', semestre = '{semestre}', turma = '{turma}'"
+
+            for caixa in caixa_questoes:
+                questoes_marcadas.append(caixa.get())
+
+            for peso in pesos:
+                peso_questoes.append(peso.get())
+
+            values_provas = f"`nome` = '{nome_gabarito}', area = '{area}', semestre = '{semestre}', turma = '{turma}'"
             seletor_provas = f"nome = '{values_tabela[1]}'" 
+            seletor_questoes = f"prova = '{values_tabela[1]}'"
 
             conexao = conectar('localhost', 'root', '', 'gabaritos')  
-            valores_prova = (nome_gabarito, turma, tipo, semestre, area)
             atualiza_tabela(conexao, 'provas',values_provas, seletor_provas)
+            
+            for i in range(len(caixa_questoes)):
+                values_questoes = f"letracerta = {questoes_marcadas[i]},  prova = {values_tabela[1]}, peso = {peso_questoes[i]}"
+                atualiza_tabela(conexao, 'questoes',values_questoes, seletor_questoes)
+
+
             desconectar(conexao) 
 
         elif comando == "teste":
@@ -105,7 +116,6 @@ def criar_gabarito():
     window.config(padx=50, pady=50, bg='WHITE')
     pesos = []
     questoes = []
-    caixa_questoes = []
     materias = ['Mátematica', 'Ciências Humanas', 'Ciências da Natureza', 'Linguagens']
     turmas = ['1° Ano', '2° Ano', '3° Ano']
     semestre = ['semestre 1', 'semestre 2']

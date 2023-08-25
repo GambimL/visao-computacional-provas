@@ -19,10 +19,9 @@ from conexão import *
 
 def criar_gabarito():
 
-    def conexao_com_banco(comando):
-
-        if comando == "inserir na tabela":
-            conexao = conectar('localhost', 'root', '', 'gabaritos')    
+    def conexao_com_banco_criar_gabarito(comando):
+        conexao = conectar('localhost', 'root', '', 'gabaritos') 
+        if comando == "inserir na tabela": 
 
             area = str(caixa_materias.get())
             turma = str(caixa_turmas.get())
@@ -35,18 +34,13 @@ def criar_gabarito():
 
             for caixa in caixa_questoes:
                 questoes_marcadas.append(caixa.get())
-
             for peso in pesos:
                 peso_questoes.append(peso.get())
-            
             for i in range(len(pesos)):
                 valores_questoes = (f'questao {i+1}', questoes_marcadas[i], peso_questoes[i], nome_gabarito) 
                 inserir_tabela(conexao, 'questoes','(questao, letracerta, peso, prova)', '(%s, %s, %s, %s)', valores_questoes)
 
-            desconectar(conexao)
-
-        elif comando == "obter da tabela":
-            conexao = conectar('localhost', 'root', '', 'gabaritos')   
+        elif comando == "obter da tabela":  
             print("teste")
             imput.delete(0, END)
             caixa_materias.delete(0, END)
@@ -73,11 +67,9 @@ def criar_gabarito():
             caixa_tipo.insert(0, dados_provas[0][2])
             imput.insert(0, dados_provas[0][0])
 
-
             for i in range(len(caixa_questoes)):
                 caixa_questoes[i].insert(0,dados_questoes[i][0])
                 pesos[i].insert(0, dados_questoes[i][1])
-            desconectar(conexao)
             
         elif comando == "atualizar tabela": 
             data_frame = tv.selection()[0]
@@ -96,20 +88,20 @@ def criar_gabarito():
 
             values_provas = f"`nome` = '{nome_gabarito}', area = '{area}', semestre = '{semestre}', turma = '{turma}'"
             seletor_provas = f"nome = '{values_tabela[1]}'" 
-            seletor_questoes = f"prova = '{values_tabela[1]}'"
 
             conexao = conectar('localhost', 'root', '', 'gabaritos')  
             atualiza_tabela(conexao, 'provas',values_provas, seletor_provas)
             
             for i in range(len(caixa_questoes)):
-                values_questoes = f"letracerta = {questoes_marcadas[i]},  prova = {values_tabela[1]}, peso = {peso_questoes[i]}"
+                seletor_questoes = f"prova = '{values_tabela[1]}' AND questao =  'questao {i+1}'"
+                values_questoes = f"letracerta = '{questoes_marcadas[i]}',  prova = '{values_tabela[1]}', peso = '{peso_questoes[i]}'"
                 atualiza_tabela(conexao, 'questoes',values_questoes, seletor_questoes)
-
-
-            desconectar(conexao) 
-
+            
         elif comando == "teste":
             print("TESTANDO A FUNÇÃO...")
+
+        desconectar(conexao) 
+
 
 
     window = Tk()
@@ -199,14 +191,12 @@ def criar_gabarito():
         caixa_questoes.append(caixa_questao)
         pesos.append(peso)
 
-    salvar = Button(window, text='Salvar', command=lambda: conexao_com_banco("inserir na tabela"), width=20)
+    salvar = Button(window, text='Salvar', command=lambda: conexao_com_banco_criar_gabarito("inserir na tabela"), width=20)
     salvar.pack(side = 'left', padx=10)
-    obter = Button(window, text='Obter', command=lambda: conexao_com_banco("obter da tabela"), width=20)
+    obter = Button(window, text='Obter', command=lambda: conexao_com_banco_criar_gabarito("obter da tabela"), width=20)
     obter.pack(side = 'left', padx=10)
-    editar = Button(window, text='Editar', command=lambda: conexao_com_banco("atualizar tabela"), width=20)
+    editar = Button(window, text='Editar', command=lambda: conexao_com_banco_criar_gabarito("atualizar tabela"), width=20)
     editar.pack(side = 'left')
-
-
 
     frame_tabela = Frame(window, bg='WHITE')
     frame_tabela.pack(side = 'top', padx= 30, pady=30)
@@ -232,8 +222,6 @@ def criar_gabarito():
 
         tv.insert(parent='', index=i, iid=i, text='', values=(i, dados[i][0], dados[i][1],dados[i][2]))
     tv.pack()
-    
-
 
     window.mainloop()
     
@@ -241,25 +229,29 @@ dados_corrigidos = []
 dados_alunos = []
 
 def corrigir_provas():
-    webcam = cv2.VideoCapture(0)
 
-    def selecionar_gabarito():
-        nome_gabarito = str(caixa_gabaritos.get())
-        ano_turma = nome_gabarito[nome_gabarito.find(',')+1:
-                                          nome_gabarito.find('Ano')]
-        semestre_numero = nome_gabarito[nome_gabarito.find('semestre')+8:
-                                                nome_gabarito.find('semestre')+10]
-        questoes, pesos = obter_dataframe(f'bancodedados/{ano_turma}Ano/semestre{semestre_numero}/{nome_gabarito}.xlsx')
-        alternativas = trasnforma_letra_para_numero(questoes)
-        for i in range(len(alternativas)):
-            tv.insert(parent='', index=i, iid=i, text='', values=(f'Qestão{i+1}', questoes[i], pesos[i]))
+    def conexao_com_banco_corrigir_provas(comando):
+        conexao = conectar('localhost', 'root', '', 'gabaritos') 
+
+        if comando == "obter na tabela provas":
+           nomes_das_provas = consultar_tabela(conexao, 'provas', 'nome', 1)
+           return nomes_das_provas
         
+        if comando == "selecionar gabarito":
+            pesos = 1
+            letras = 0
+            condicional_provas = f"prova = '{caixa_gabaritos.get()}'"
+            gabarito_da_questao = consultar_tabela(conexao, 'questoes', 'prova, letracerta, peso', condicional_provas)
+            for letra, peso in range(len(gabarito_da_questao)):
+                tv.insert(parent='', index=letra, iid=letra, text='', values=(f'Qestão{letra+1}', gabarito_da_questao[letras][letra],
+                                                                                    gabarito_da_questao[pesos][peso]))
 
-   
+
+
+        desconectar(conexao)
+    webcam = cv2.VideoCapture(0)
+        
     def processar_gabarito():
-        global dados_corrigidos
-        global dados_alunos
-
         nome_aluno.delete(0, END)
         nota.delete(0, END)
         nome_gabarito = str(caixa_gabaritos.get())
@@ -280,8 +272,6 @@ def corrigir_provas():
 
         texto_aluno = texto_aluno[texto_aluno.find(':')+1::]
         nome_aluno.insert(0, texto_aluno)
-
-        
 
         gabarito_aluno = np.zeros(20)
         for i in range(len(posicao_corretas)):
@@ -311,20 +301,16 @@ def corrigir_provas():
     window.config(padx=100, pady=100)
 
 
-
     frame_tabela = Frame(window)
     frame_tabela.pack(side = 'left')
-    gabaritos = lista_arquivos_subdiretorios('C:/Users/usuario/Desktop/visãoprovas/bancodedados')
-    print(gabaritos)
-    gabarito_corrigido =  []
-
-    for i in range(len(gabaritos)):
-        gabarito_corrigido.append(retira_extensao(gabaritos[i]))
+    nomes_das_provas = conexao_com_banco_corrigir_provas("obter na tabela provas")
+    print(nomes_das_provas)
     
-    caixa_gabaritos = ttk.Combobox(frame_tabela, value=gabarito_corrigido, width=45)
+    caixa_gabaritos = ttk.Combobox(frame_tabela, value=nomes_das_provas, width=45)
     caixa_gabaritos.pack(pady = 20)
 
-    selecionar_gabarito = Button(frame_tabela, text='Selecionar Gabarito', command=selecionar_gabarito, width=20)
+    selecionar_gabarito = Button(frame_tabela, text='Selecionar Gabarito', 
+                                 command=lambda: conexao_com_banco_corrigir_provas("selecionar gabarito"), width=20)
     selecionar_gabarito.pack(pady = 20)
 
 
@@ -342,7 +328,6 @@ def corrigir_provas():
 
     frame_dados = Frame(window)
     frame_dados.pack(side = 'left', padx=50)
-
 
     camera = Button(frame_dados, text='Abrir câmera', command=processar_gabarito, width=20)
     camera.pack()
@@ -371,9 +356,6 @@ def corrigir_provas():
 
 def dados():
     window = Tk()
-
-    
-
 
     window.mainloop()
 

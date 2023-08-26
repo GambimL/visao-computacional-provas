@@ -1,4 +1,5 @@
 import mysql.connector
+import numpy as np
 from mysql.connector import Error
 
 def conectar(host, usuario, senha, banco):
@@ -26,12 +27,15 @@ def inserir_tabela(con, tabela, colunas, values, dados):
 def consultar_tabela(con, tabela, colunas, especificacao):
     try:
         dados = []
+
         cursor = con.cursor()
         sql = f"SELECT {colunas} FROM {tabela} WHERE {especificacao}"
         cursor.execute(sql)
 
         for dado in cursor:
-            dados.append(dado) 
+            dados.append(dado)
+
+
         return dados
     except Error as erro:
         print(f"Falha ao consultar na tabela devido ao erro {erro}")

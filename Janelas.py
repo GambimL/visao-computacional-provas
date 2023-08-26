@@ -231,20 +231,48 @@ dados_alunos = []
 def corrigir_provas():
 
     def conexao_com_banco_corrigir_provas(comando):
+        pesos = None
+        letras = None
         conexao = conectar('localhost', 'root', '', 'gabaritos') 
 
         if comando == "obter na tabela provas":
            nomes_das_provas = consultar_tabela(conexao, 'provas', 'nome', 1)
            return nomes_das_provas
         
-        if comando == "selecionar gabarito":
-            pesos = 1
-            letras = 0
+        elif comando == "selecionar gabarito":
+            pesos = 3
+            letras = 2
             condicional_provas = f"prova = '{caixa_gabaritos.get()}'"
-            gabarito_da_questao = consultar_tabela(conexao, 'questoes', 'prova, letracerta, peso', condicional_provas)
-            for letra, peso in range(len(gabarito_da_questao)):
-                tv.insert(parent='', index=letra, iid=letra, text='', values=(f'Qestão{letra+1}', gabarito_da_questao[letras][letra],
-                                                                                    gabarito_da_questao[pesos][peso]))
+            tabela_questoes = consultar_tabela(conexao, 'questoes', 'prova, questao, letracerta, peso', condicional_provas)
+            for coluna in range(len(tabela_questoes)):
+                tv.insert(parent='', index=coluna, iid=coluna, text='', values=(f'Qestão{coluna+1}', tabela_questoes[coluna][letras],
+                                                                                    tabela_questoes[coluna][pesos]))
+                
+        elif comando == "processar gabarito":
+            letras = 0
+            pesos = 2
+
+            nome_aluno.delete(0, END)
+            nota.delete(0, END)
+
+            prova = f"prova = '{caixa_gabaritos.get()}'"
+            gabarito_da_questao = consultar_tabela(conexao, 'questoes', 'letracerta, peso', prova)
+            gabarito_da_questao = np.array(gabarito_da_questao)
+            alternativas = trasnforma_letra_para_numero(gabarito_da_questao[:, letras])  
+
+            frame = abre_camera()
+            webcam.release()
+            paper, corretas, pesos_corretas, posicao_corretas, texto_aluno = pre_processa_imagem(frame, alternativas, pesos)
+            acertos = len(corretas)
+            resultado = calcula_total(acertos, pesos_corretas)
+            
+            nota.insert(0, resultado)
+            texto_aluno = texto_aluno[texto_aluno.find(':')+1::]
+            nome_aluno.insert(0, texto_aluno)
+        
+
+            
+
 
 
 
@@ -261,6 +289,7 @@ def corrigir_provas():
                                                 nome_gabarito.find('semestre')+10]
         questoes, pesos = obter_dataframe(f'bancodedados/{ano_turma}Ano/semestre{semestre_numero}/{nome_gabarito}.xlsx')
         alternativas = trasnforma_letra_para_numero(questoes)
+        
 
         frame = abre_camera()
         
@@ -304,7 +333,6 @@ def corrigir_provas():
     frame_tabela = Frame(window)
     frame_tabela.pack(side = 'left')
     nomes_das_provas = conexao_com_banco_corrigir_provas("obter na tabela provas")
-    print(nomes_das_provas)
     
     caixa_gabaritos = ttk.Combobox(frame_tabela, value=nomes_das_provas, width=45)
     caixa_gabaritos.pack(pady = 20)
@@ -329,7 +357,7 @@ def corrigir_provas():
     frame_dados = Frame(window)
     frame_dados.pack(side = 'left', padx=50)
 
-    camera = Button(frame_dados, text='Abrir câmera', command=processar_gabarito, width=20)
+    camera = Button(frame_dados, text='Abrir câmera', command=lambda: conexao_com_banco_corrigir_provas("processar gabarito"), width=20)
     camera.pack()
 
     label_aluno = Label(frame_dados, text='Nome do Aluno',  anchor=W)
